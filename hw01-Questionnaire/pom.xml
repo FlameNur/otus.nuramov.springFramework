@@ -16,4 +16,27 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <version>5.3.20</version>
+        </dependency>
+        <dependency>
+
+            <!--Доверяем spring создание новых объектов и затем извлекаем их из spring application context.
+            В Spring-е бином (bean) называют любой класс, который управляется контейнером Spring,
+            т.е. такими вещами, как создание экземпляра бина, его инициализация, внедрение зависимостей и параметров,
+            деинициализация, генерация всевозможных оберток над бином, занимается не мой код, а IoC-контейнер Spring-а.-->
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>5.3.20</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>5.3.20</version>
+        </dependency>
+    </dependencies>
 </project>
