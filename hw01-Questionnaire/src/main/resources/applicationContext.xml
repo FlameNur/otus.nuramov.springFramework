@@ -3,6 +3,10 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--Доверяем spring создание новых объектов и затем извлекаем их из spring application context.
+        В Spring-е бином (bean) называют любой класс, который управляется контейнером Spring,
+        т.е. такими вещами, как создание экземпляра бина, его инициализация, внедрение зависимостей и параметров,
+        деинициализация, генерация всевозможных оберток над бином, занимается не мой код, а IoC-контейнер Spring-а.-->
     <bean>
 
     </bean>

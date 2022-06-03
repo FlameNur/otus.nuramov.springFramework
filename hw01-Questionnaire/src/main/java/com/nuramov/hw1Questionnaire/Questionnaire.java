@@ -12,5 +12,16 @@ public class Questionnaire {
         this.answers = answers;
     }
 
+    // Для spring
+       /* ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+                "applicationContext.xml"
+        );*/
+
+
+    // Что-то...
+
+
+    //context.close();
+
 
 }
