@@ -6,6 +6,7 @@ import com.nuramov.hw01Questionnaire.CsvParser.CsvParser;
 import com.nuramov.hw01Questionnaire.CsvParser.CsvParserImpl;
 import com.nuramov.hw01Questionnaire.Questions.Questions;
 import com.nuramov.hw01Questionnaire.Questions.QuestionsImpl;
+import com.nuramov.hw01Questionnaire.ValuesToCheck.ValuesToCheckImpl;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.io.BufferedReader;
@@ -20,7 +21,8 @@ public class Main {
     public static void main(String[] args) {
         Questionnaire questionnaire = new Questionnaire(
                 new QuestionsImpl("Questions.csv"),
-                new AnswersImpl("Answers.csv")
+                new AnswersImpl("Answers.csv"),
+                new ValuesToCheckImpl("ValuesToCheck.csv")
         );
 
         questionnaire.runQuestionnaire();
