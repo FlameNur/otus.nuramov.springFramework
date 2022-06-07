@@ -7,7 +7,9 @@
         В Spring-е бином (bean) называют любой класс, который управляется контейнером Spring,
         т.е. такими вещами, как создание экземпляра бина, его инициализация, внедрение зависимостей и параметров,
         деинициализация, генерация всевозможных оберток над бином, занимается не мой код, а IoC-контейнер Spring-а.-->
-    <bean>
+    <bean id="QuestionsBean"
+          class="com.nuramov.hw01Questionnaire.Questions.QuestionsImpl">
 
+        <constructor-arg value=""/>
     </bean>
 </beans>
