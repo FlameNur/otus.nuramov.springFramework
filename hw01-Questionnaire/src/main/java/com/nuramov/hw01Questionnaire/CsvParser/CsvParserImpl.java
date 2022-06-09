@@ -8,33 +8,33 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
 
+/**
+ * Класс CsvParserImpl реализует интерфейс CsvParser
+ */
 public class CsvParserImpl implements CsvParser{
-    private String filePath;
 
-    public CsvParserImpl(String filePath) {
+    @Override
+    public Map<String, String> getFileFromResourceAsMap(String filePath) {
+        InputStream is;
+
         if(filePath != null) {
-            this.filePath = filePath;
+            is = getFileFromResourceAsStream(filePath);
         } else {
             throw new IllegalArgumentException("File not found!");
         }
-    }
-
-    @Override
-    public Map<String, String> getFileFromResourceAsMap() {
-        InputStream is = getFileFromResourceAsStream();
         return printInputStream(is);
     }
 
     /**
-     *
-     * @return
+     * Метод getFileFromResourceAsStream позволяет получить поток вводимой информации
+     * @param filePath - расположение .csv файла
+     * @return - поток вводимой информации из .csv файла
      */
-    private InputStream getFileFromResourceAsStream() {
-        // The class loader that loaded the class
+    private InputStream getFileFromResourceAsStream(String filePath) {
+        // Загрузчик текущего класса, чтобы получить поток вводимой информации из .csv файла
         ClassLoader classLoader = getClass().getClassLoader();
         InputStream inputStream = classLoader.getResourceAsStream(filePath);
 
-        // the stream holding the file content
         if (inputStream == null) {
             throw new IllegalArgumentException("File not found! " + filePath);
         } else {
@@ -43,19 +43,24 @@ public class CsvParserImpl implements CsvParser{
     }
 
     /**
-     *
-     * @param is
-     * @return
+     * Метод printInputStream позволяет
+     * @param is - поток вводимой информации из .csv файла
+     * @return - Map<String, String>,
+     * где ключ - номер (id), значение - вопрос/варианты ответа/номер правильного ответа
      */
     private Map<String, String> printInputStream(InputStream is) {
+        // Используем TreeMap, чтобы сразу отсортировать информацию по ключам
         Map<String, String> mapOfItems = new TreeMap<>();
 
+        // Считываем поток вводимой информации
         try (InputStreamReader streamReader =
                      new InputStreamReader(is, StandardCharsets.UTF_8);
              BufferedReader reader = new BufferedReader(streamReader)) {
 
+            // Считываем строки из .csv файла
             String line;
             while ((line = reader.readLine()) != null) {
+                // Разделяем строки на ключ и значение и записываем в Map
                 String[] items = line.split(";");
                 mapOfItems.put(items[0], items[1]);
             }

@@ -1,26 +1,19 @@
 package com.nuramov.hw01Questionnaire;
 
-import com.nuramov.hw01Questionnaire.Answers.AnswersImpl;
-import com.nuramov.hw01Questionnaire.Questions.QuestionsImpl;
-import com.nuramov.hw01Questionnaire.ValuesToCheck.ValuesToCheckImpl;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+/**
+ * Запускаем опросник Questionnaire используя spring с конфигурацией в .xml файле
+ */
 public class Main {
     public static void main(String[] args) {
-        Questionnaire questionnaire = new Questionnaire(
-                new QuestionsImpl("Questions.csv"),
-                new AnswersImpl("Answers.csv"),
-                new ValuesToCheckImpl("ValuesToCheck.csv")
-        );
-
+        // Context для конфигурации spring
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
+        // Получаем объект класса Questionnaire через контекст, где прописаны все аргументы и другие бины
+        Questionnaire questionnaire = context.getBean("questionnaireBean", Questionnaire.class);
+        // Запускаем опросник
         questionnaire.runQuestionnaire();
 
-
-
-
-        // Для spring
-        //ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("beans.xml");
-
-        // Что-то...
-        //context.close();
+        context.close();
     }
 }

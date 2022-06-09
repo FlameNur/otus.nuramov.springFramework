@@ -7,9 +7,18 @@
         В Spring-е бином (bean) называют любой класс, который управляется контейнером Spring,
         т.е. такими вещами, как создание экземпляра бина, его инициализация, внедрение зависимостей и параметров,
         деинициализация, генерация всевозможных оберток над бином, занимается не мой код, а IoC-контейнер Spring-а.-->
-    <bean id="QuestionsBean"
-          class="com.nuramov.hw01Questionnaire.Questions.QuestionsImpl">
 
-        <constructor-arg value=""/>
+    <!--Spring при создании bean "questionnaireBean" в качестве аргумента будет принимать адреса
+        к csv файлам и bean CsvParserImplBean-->
+    <bean id="questionnaireBean" class="com.nuramov.hw01Questionnaire.Questionnaire">
+        <constructor-arg index="0" value="Questions.csv"/>
+        <constructor-arg index="1" value="Answers.csv"/>
+        <constructor-arg index="2" value="ValuesToCheck.csv"/>
+        <constructor-arg index="3" ref="csvParserImplBean"/>
+    </bean>
+
+    <!--Прописываем наш csv парсер, чтобы внедрить зависимость в класс Questionnaire-->
+    <bean id="csvParserImplBean"
+          class="com.nuramov.hw01Questionnaire.CsvParser.CsvParserImpl">
     </bean>
 </beans>
