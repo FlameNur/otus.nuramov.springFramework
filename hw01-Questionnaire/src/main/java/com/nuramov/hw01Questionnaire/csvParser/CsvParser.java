@@ -1,9 +1,9 @@
-package com.nuramov.hw01Questionnaire.CsvParser;
+package com.nuramov.hw01Questionnaire.csvParser;
 
 import java.util.Map;
 
 /**
- * Интерфейс CsvParser предназначен для работы с .csv файлом
+ * Интерфейс csvParser предназначен для работы с .csv файлом
  * и преобразования информации из .csv файла в Map<String, String>
  */
 public interface CsvParser {
