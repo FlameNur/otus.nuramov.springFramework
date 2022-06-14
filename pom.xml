@@ -6,7 +6,11 @@
 
     <groupId>com.nuramov.springFramework</groupId>
     <artifactId>otus.nuramov.springFramework-homeworks</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>hw01-Questionnaire</module>
+    </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
