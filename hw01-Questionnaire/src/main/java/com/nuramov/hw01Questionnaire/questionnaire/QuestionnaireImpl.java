@@ -35,9 +35,15 @@ public class QuestionnaireImpl implements Questionnaire {
             // Проходим в цикле по всем вопросам
             for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
                 // Выводим вопрос в консоль
-                String answers = printQuestion(entry);
-                // Выводим варианты ответа, возвращаем длину массива
-                int arrayLength = printAnswerOptions(answers);
+                System.out.println("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
+                // Получаем варианты ответа в одну строку
+                String answers = mapOfAnswers.get(entry.getKey());
+                // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
+                String[] arrayOfAnswerOptions = answers.split(",");
+                // Получаем длину массива
+                int arrayLength = arrayOfAnswerOptions.length;
+                // Выводим варианты ответа
+                printAnswerOptions(arrayOfAnswerOptions);
                 // Получаем введенный ответ и проверяем его на корректность
                 String enteredValueStr = getAnswer(reader, arrayLength);
                 // Проверяем правильность введенного ответа
@@ -53,29 +59,14 @@ public class QuestionnaireImpl implements Questionnaire {
     }
 
     /**
-     * Метод printQuestion позволяет печатать вопросы в консоль
-     * @param entry - запись в Map (ключ-значение), в нашем случае: номер вопроса-вопрос
-     * @return - ответы в одну строку, разделенные запятыми
-     */
-    private String printQuestion(Map.Entry<String, String > entry) {
-        System.out.println("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
-        // Находим строку с вариантами ответа в Map по ключу, который соответствует номеру вопроса
-        return mapOfAnswers.get(entry.getKey());
-    }
-
-    /**
      * Метод printAnswerOptions позволяет печатать варианты ответов в консоль
-     * @param answers - ответы в одну строку, разделенные запятыми
-     * @return - длина массива с вариантами ответа
+     * @param arrayOfAnswerOptions - массив с вариантами ответа
      */
-    private int printAnswerOptions(String answers) {
-        // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
-        String[] arrayOfAnswerOptions = answers.split(",");
+    private void printAnswerOptions(String[] arrayOfAnswerOptions) {
         System.out.println("Выберете один из вариантов ответа. Запишите номер ответа:");
         for (int j = 0; j < arrayOfAnswerOptions.length; j++) {
             System.out.println("Ответ: №" + (j + 1) + " - " + arrayOfAnswerOptions[j]);
         }
-        return arrayOfAnswerOptions.length;
     }
 
     /**
