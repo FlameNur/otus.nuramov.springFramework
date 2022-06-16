@@ -1,4 +1,6 @@
 package com.nuramov.hw02Questionnaire.userAuthorization;
 
-public class UserAuthorization {
+public interface UserAuthorization {
+
+    void runUserAuthorization();
 }
