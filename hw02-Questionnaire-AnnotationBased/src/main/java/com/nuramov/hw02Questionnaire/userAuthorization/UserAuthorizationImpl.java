@@ -10,8 +10,21 @@ public class UserAuthorizationImpl implements UserAuthorization{
     public void runUserAuthorization() {
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             System.out.println("Введите ваше имя и фамилию");
-            System.out.println("Имя: ");
-            System.out.println("Фамилия: ");
+
+
+            boolean correctValue = true;
+
+            while (correctValue) {
+                // Считываем ответ
+                System.out.println("Имя: " + reader.readLine());
+                System.out.println("Фамилия: " + reader.readLine());
+
+                // Проверяем корректность введенного ответа: true-некорректный, false-корректный
+                correctValue = false;
+            }
+
+
+
 
         } catch (IOException e) {
             e.printStackTrace();
