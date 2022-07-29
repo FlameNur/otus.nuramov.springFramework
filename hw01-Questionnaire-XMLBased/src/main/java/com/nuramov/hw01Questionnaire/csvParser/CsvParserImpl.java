@@ -11,7 +11,7 @@ import java.util.TreeMap;
 /**
  * Класс CsvParserImpl реализует интерфейс csvParser
  */
-public class CsvParserImpl implements CsvParser{
+public class CsvParserImpl implements CsvParser {
 
     @Override
     public Map<String, String> getFileFromResourceAsMap(String filePath) {

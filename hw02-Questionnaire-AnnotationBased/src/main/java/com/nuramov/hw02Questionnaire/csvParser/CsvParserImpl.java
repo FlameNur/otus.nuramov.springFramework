@@ -1,5 +1,7 @@
 package com.nuramov.hw02Questionnaire.csvParser;
 
+import org.springframework.stereotype.Service;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +13,7 @@ import java.util.TreeMap;
 /**
  * Класс CsvParserImpl реализует интерфейс csvParser
  */
+@Service
 public class CsvParserImpl implements CsvParser{
 
     @Override

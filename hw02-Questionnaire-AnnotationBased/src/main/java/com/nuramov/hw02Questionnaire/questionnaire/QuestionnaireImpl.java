@@ -1,6 +1,8 @@
 package com.nuramov.hw02Questionnaire.questionnaire;
 
 import com.nuramov.hw02Questionnaire.csvParser.CsvParser;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,6 +13,7 @@ import java.util.regex.Pattern;
 /**
  * Класс QuestionnaireImpl реализует интерфейс Questionnaire
  */
+@Service
 public class QuestionnaireImpl implements Questionnaire {
     // Map с вопросами (ключ - номер вопроса (id), значение - тело вопроса)
     private Map<String, String> mapOfQuestions;
@@ -19,6 +22,7 @@ public class QuestionnaireImpl implements Questionnaire {
     // Map с правильными ответами (ключ - номер вопроса (id), значение - правильный ответ)
     private Map<String, String> mapOfValuesToCheck;
 
+    @Autowired
     public QuestionnaireImpl(String questionsPath, String answersPath, String valuesToCheckPath, CsvParser csvParser) {
         this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
         this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
