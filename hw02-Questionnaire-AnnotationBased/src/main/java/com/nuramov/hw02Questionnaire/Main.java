@@ -17,7 +17,6 @@ public class Main {
                         new CsvParserImpl()
                 ));
 
-        userService.runAuthorization();
-        userService.runQuestionnaire();
+        userService.run();
     }
 }

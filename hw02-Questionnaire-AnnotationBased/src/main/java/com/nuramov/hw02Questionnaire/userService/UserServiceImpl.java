@@ -5,6 +5,10 @@ import com.nuramov.hw02Questionnaire.userAuthorization.UserAuthorization;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 @Service
 public class UserServiceImpl implements UserService{
     UserAuthorization userAuthorization;
@@ -17,12 +21,22 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void runAuthorization() {
-        userAuthorization.runUserAuthorization();
+    public void run() {
+        // System.in можем закрыть всего один раз, поэтому try-with-resources вызываем в этом методе,
+        // а не отдельно в каждом из классов UserAuthorization и Questionnaire
+        try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
+            runAuthorization(reader);
+            runQuestionnaire(reader);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    @Override
-    public void runQuestionnaire() {
-        questionnaire.runQuestionnaire();
+    private void runAuthorization(BufferedReader reader) {
+        userAuthorization.runUserAuthorization(reader);
+    }
+
+    private void runQuestionnaire(BufferedReader reader) {
+        questionnaire.runQuestionnaire(reader);
     }
 }

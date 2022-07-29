@@ -30,33 +30,36 @@ public class QuestionnaireImpl implements Questionnaire {
     }
 
     @Override
-    public void runQuestionnaire() {
+    public void runQuestionnaire(BufferedReader reader) {
         // Счетчик правильных ответов
         int sumOfValue = 0;
 
         // Ответы вводим через консоль
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            // Проходим в цикле по всем вопросам
-            for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
-                // Выводим вопрос в консоль
-                System.out.println("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
-                // Получаем варианты ответа в одну строку
-                String answers = mapOfAnswers.get(entry.getKey());
-                // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
-                String[] arrayOfAnswerOptions = answers.split(",");
-                // Получаем длину массива
-                int arrayLength = arrayOfAnswerOptions.length;
-                // Выводим варианты ответа
-                printAnswerOptions(arrayOfAnswerOptions);
-                // Получаем введенный ответ и проверяем его на корректность
-                String enteredValueStr = getAnswer(reader, arrayLength);
-                // Проверяем правильность введенного ответа
-                if(handleAnswer(enteredValueStr, entry.getKey())) {
-                    sumOfValue++;
-                }
+        // Проходим в цикле по всем вопросам
+        for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
+            // Выводим вопрос в консоль
+            System.out.println("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
+            // Получаем варианты ответа в одну строку
+            String answers = mapOfAnswers.get(entry.getKey());
+            // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
+            String[] arrayOfAnswerOptions = answers.split(",");
+            // Получаем длину массива
+            int arrayLength = arrayOfAnswerOptions.length;
+            // Выводим варианты ответа
+            printAnswerOptions(arrayOfAnswerOptions);
+
+            // Получаем введенный ответ и проверяем его на корректность
+            String enteredValueStr = null;
+            try {
+                enteredValueStr = getAnswer(reader, arrayLength);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+
+            // Проверяем правильность введенного ответа
+            if(handleAnswer(enteredValueStr, entry.getKey())) {
+                sumOfValue++;
+            }
         }
         // Выводим суммарный результат ответов на вопросы в %
         System.out.println("\nПоздравляю! Вы ответили на " + ((100/mapOfQuestions.size()) * sumOfValue) + "% вопросов верно");

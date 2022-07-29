@@ -10,27 +10,25 @@ import java.io.InputStreamReader;
 public class UserAuthorizationImpl implements UserAuthorization{
 
     @Override
-    public void runUserAuthorization() {
-        try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
-            System.out.println("Введите ваше имя и фамилию");
+    public void runUserAuthorization(BufferedReader reader) {
 
+        boolean correctValue = true;
 
-            boolean correctValue = true;
+        while (correctValue) {
+            // Считываем ответ
+            try {
+                System.out.println("Введите ваше имя: ");
+                reader.readLine();
 
-            while (correctValue) {
-                // Считываем ответ
-                System.out.println("Имя: " + reader.readLine());
-                System.out.println("Фамилия: " + reader.readLine());
-
-                // Проверяем корректность введенного ответа: true-некорректный, false-корректный
-                correctValue = false;
+                System.out.println("Введите вашу фамилию: ");
+                reader.readLine();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
 
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
+            // Проверяем корректность введенного ответа: true-некорректный, false-корректный
+            correctValue = false;
         }
     }
 }
