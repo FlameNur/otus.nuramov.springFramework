@@ -2,6 +2,7 @@ package com.nuramov.hw02Questionnaire.questionnaire;
 
 import com.nuramov.hw02Questionnaire.csvParser.CsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -14,6 +15,7 @@ import java.util.regex.Pattern;
  * Класс QuestionnaireImpl реализует интерфейс Questionnaire
  */
 @Service
+@PropertySource("classpath:resources.properties")  // Пока хз как это делать
 public class QuestionnaireImpl implements Questionnaire {
     // Map с вопросами (ключ - номер вопроса (id), значение - тело вопроса)
     private Map<String, String> mapOfQuestions;
