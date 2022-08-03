@@ -2,6 +2,7 @@ package com.nuramov.hw02Questionnaire.questionnaire;
 
 import com.nuramov.hw02Questionnaire.csvParser.CsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.regex.Pattern;
  * Класс QuestionnaireImpl реализует интерфейс Questionnaire
  */
 @Service
-@PropertySource("classpath:resources.properties")  // Пока хз как это делать
+@PropertySource("classpath:resources.properties")
 public class QuestionnaireImpl implements Questionnaire {
     // Map с вопросами (ключ - номер вопроса (id), значение - тело вопроса)
     private Map<String, String> mapOfQuestions;
@@ -25,7 +26,10 @@ public class QuestionnaireImpl implements Questionnaire {
     private Map<String, String> mapOfValuesToCheck;
 
     @Autowired
-    public QuestionnaireImpl(String questionsPath, String answersPath, String valuesToCheckPath, CsvParser csvParser) {
+    public QuestionnaireImpl(@Value("${QuestionsSource}") String questionsPath,
+                             @Value("${AnswersSource}") String answersPath,
+                             @Value("${ValuesToCheckSource}") String valuesToCheckPath,
+                             CsvParser csvParser) {
         this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
         this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
         this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
