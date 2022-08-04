@@ -9,6 +9,7 @@ public interface Questionnaire {
 
     /**
      * Метод runQuestionnaire запускает опросник с вопросами и ответами на выбор
+     * @param reader -
      */
     void runQuestionnaire(BufferedReader reader);
 }

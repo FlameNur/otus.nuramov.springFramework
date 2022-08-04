@@ -17,7 +17,7 @@ import java.util.TreeMap;
 public class CsvParserImpl implements CsvParser{
 
     @Override
-    public Map<String, String> getFileFromResourceAsMap(String filePath) {
+    public Map<String, String> getFileFromResourceAsMap(String filePath, BufferedReader reader) {
         Map<String, String> mapOfItems;
 
         if(filePath != null) {
@@ -38,11 +38,11 @@ public class CsvParserImpl implements CsvParser{
         // Используем TreeMap, чтобы сразу отсортировать информацию по ключам
         Map<String, String> mapOfItems = new TreeMap<>();
 
+
         // Загрузчик текущего класса, чтобы получить поток вводимой информации из .csv файла
         ClassLoader classLoader = getClass().getClassLoader();
         try(InputStream inputStream = classLoader.getResourceAsStream(filePath);
-            InputStreamReader streamReader =
-                    new InputStreamReader(inputStream, StandardCharsets.UTF_8);
+            InputStreamReader streamReader = new InputStreamReader(inputStream, StandardCharsets.UTF_8);
             BufferedReader reader = new BufferedReader(streamReader)) {
 
             // Считываем строки из .csv файла

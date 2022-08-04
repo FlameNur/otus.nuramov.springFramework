@@ -25,18 +25,37 @@ public class QuestionnaireImpl implements Questionnaire {
     // Map с правильными ответами (ключ - номер вопроса (id), значение - правильный ответ)
     private Map<String, String> mapOfValuesToCheck;
 
+    // Пробуем так
+    private CsvParser csvParser;
+    private String questionsPath;
+    private String answersPath;
+    private String valuesToCheckPath;
+
     @Autowired
     public QuestionnaireImpl(@Value("${QuestionsSource}") String questionsPath,
                              @Value("${AnswersSource}") String answersPath,
                              @Value("${ValuesToCheckSource}") String valuesToCheckPath,
                              CsvParser csvParser) {
-        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
-        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
-        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
+        this.questionsPath = questionsPath;
+        this.answersPath = answersPath;
+        this.valuesToCheckPath = valuesToCheckPath;
+        this.csvParser = csvParser;
+
+
     }
 
     @Override
     public void runQuestionnaire(BufferedReader reader) {
+        // Надо будет переделать
+        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath, reader);
+        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath, reader);
+        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath, reader);
+
+
+
+
+
+
         // Счетчик правильных ответов
         int sumOfValue = 0;
 
