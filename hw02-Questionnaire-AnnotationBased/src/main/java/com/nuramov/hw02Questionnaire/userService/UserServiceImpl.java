@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public void run() {
-        // System.in можем закрыть всего один раз, поэтому try-with-resources вызываем в этом методе,
+        // Поток ввода/вывода можем закрыть всего один раз, поэтому try-with-resources вызываем в этом методе,
         // а не отдельно в каждом из классов UserAuthorization и Questionnaire
         try(BufferedReader reader = new BufferedReader(new InputStreamReader(System.in))) {
             runAuthorization(reader);
@@ -31,6 +31,22 @@ public class UserServiceImpl implements UserService{
             e.printStackTrace();
         }
     }
+
+
+    /*public List<String[]> readLineByLine(Path filePath) throws Exception {
+        List<String[]> list = new ArrayList<>();
+        try (Reader reader = Files.newBufferedReader(filePath)) {
+            try (CSVReader csvReader = new CSVReader(reader)) {
+                String[] line;
+                while ((line = csvReader.readNext()) != null) {
+                    list.add(line);
+                }
+            }
+        }
+        return list;
+    }*/
+
+
 
     private void runAuthorization(BufferedReader reader) {
         userAuthorization.runUserAuthorization(reader);

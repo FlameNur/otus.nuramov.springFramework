@@ -12,9 +12,8 @@ public interface CsvParser {
     /**
      * Метод getFileFromResourceAsMap позволяет получить Map<String, String> из .csv файла
      * @param filePath - расположение .csv файла
-     * @param reader - ????
      * @return - возвращает Map<String, String>,
      * где ключ - номер (id), значение - вопрос/варианты ответа/номер правильного ответа
      */
-    Map<String, String> getFileFromResourceAsMap(String filePath, BufferedReader reader);
+    Map<String, String> getFileFromResourceAsMap(String filePath);
 }

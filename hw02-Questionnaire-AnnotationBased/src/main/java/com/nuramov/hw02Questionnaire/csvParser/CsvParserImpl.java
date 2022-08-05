@@ -17,7 +17,7 @@ import java.util.TreeMap;
 public class CsvParserImpl implements CsvParser{
 
     @Override
-    public Map<String, String> getFileFromResourceAsMap(String filePath, BufferedReader reader) {
+    public Map<String, String> getFileFromResourceAsMap(String filePath) {
         Map<String, String> mapOfItems;
 
         if(filePath != null) {

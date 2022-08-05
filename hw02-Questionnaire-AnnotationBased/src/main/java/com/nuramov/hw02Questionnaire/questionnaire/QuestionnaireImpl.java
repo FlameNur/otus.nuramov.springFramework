@@ -36,6 +36,8 @@ public class QuestionnaireImpl implements Questionnaire {
                              @Value("${AnswersSource}") String answersPath,
                              @Value("${ValuesToCheckSource}") String valuesToCheckPath,
                              CsvParser csvParser) {
+
+
         this.questionsPath = questionsPath;
         this.answersPath = answersPath;
         this.valuesToCheckPath = valuesToCheckPath;
@@ -47,9 +49,9 @@ public class QuestionnaireImpl implements Questionnaire {
     @Override
     public void runQuestionnaire(BufferedReader reader) {
         // Надо будет переделать
-        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath, reader);
-        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath, reader);
-        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath, reader);
+        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
+        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
+        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
 
 
 
