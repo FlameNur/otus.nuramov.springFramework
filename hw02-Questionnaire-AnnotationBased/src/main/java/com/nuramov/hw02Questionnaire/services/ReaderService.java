@@ -1,6 +1,6 @@
 package com.nuramov.hw02Questionnaire.services;
 
-public interface ReaderAndCsvParserService {
+public interface ReaderService {
 
     void run();
 }

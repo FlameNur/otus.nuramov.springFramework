@@ -47,11 +47,14 @@ public class QuestionnaireImpl implements Questionnaire {
     }
 
     @Override
-    public void runQuestionnaire(BufferedReader reader) {
+    public void runQuestionnaire(BufferedReader reader,
+                                 Map<String, String> mapOfQuestions,
+                                 Map<String, String> mapOfAnswers,
+                                 Map<String, String> mapOfValuesToCheck) {
         // Надо будет переделать
-        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
-        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
-        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
+        this.mapOfQuestions = mapOfQuestions;
+        this.mapOfAnswers = mapOfAnswers;
+        this.mapOfValuesToCheck = mapOfValuesToCheck;
 
 
 
