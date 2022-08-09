@@ -38,7 +38,6 @@ public class CsvParserImpl implements CsvParser{
         // Используем TreeMap, чтобы сразу отсортировать информацию по ключам
         Map<String, String> mapOfItems = new TreeMap<>();
 
-
         // Загрузчик текущего класса, чтобы получить поток вводимой информации из .csv файла
         ClassLoader classLoader = getClass().getClassLoader();
         try(InputStream inputStream = classLoader.getResourceAsStream(filePath);

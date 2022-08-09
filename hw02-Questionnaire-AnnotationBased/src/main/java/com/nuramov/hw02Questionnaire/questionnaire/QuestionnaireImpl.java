@@ -3,12 +3,10 @@ package com.nuramov.hw02Questionnaire.questionnaire;
 import com.nuramov.hw02Questionnaire.csvParser.CsvParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Map;
 import java.util.regex.Pattern;
 
@@ -16,51 +14,26 @@ import java.util.regex.Pattern;
  * Класс QuestionnaireImpl реализует интерфейс Questionnaire
  */
 @Service
-@PropertySource("classpath:resources.properties")
 public class QuestionnaireImpl implements Questionnaire {
     // Map с вопросами (ключ - номер вопроса (id), значение - тело вопроса)
-    private Map<String, String> mapOfQuestions;
+    private final Map<String, String> mapOfQuestions;
     // Map с ответами (ключ - номер вопроса (id), значение - варианты ответов, разделенные запятыми)
-    private Map<String, String> mapOfAnswers;
+    private final Map<String, String> mapOfAnswers;
     // Map с правильными ответами (ключ - номер вопроса (id), значение - правильный ответ)
-    private Map<String, String> mapOfValuesToCheck;
-
-    // Пробуем так
-    private CsvParser csvParser;
-    private String questionsPath;
-    private String answersPath;
-    private String valuesToCheckPath;
+    private final Map<String, String> mapOfValuesToCheck;
 
     @Autowired
     public QuestionnaireImpl(@Value("${QuestionsSource}") String questionsPath,
                              @Value("${AnswersSource}") String answersPath,
                              @Value("${ValuesToCheckSource}") String valuesToCheckPath,
                              CsvParser csvParser) {
-
-
-        this.questionsPath = questionsPath;
-        this.answersPath = answersPath;
-        this.valuesToCheckPath = valuesToCheckPath;
-        this.csvParser = csvParser;
-
-
+        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
+        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
+        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
     }
 
     @Override
-    public void runQuestionnaire(BufferedReader reader,
-                                 Map<String, String> mapOfQuestions,
-                                 Map<String, String> mapOfAnswers,
-                                 Map<String, String> mapOfValuesToCheck) {
-        // Надо будет переделать
-        this.mapOfQuestions = mapOfQuestions;
-        this.mapOfAnswers = mapOfAnswers;
-        this.mapOfValuesToCheck = mapOfValuesToCheck;
-
-
-
-
-
-
+    public void runQuestionnaire(BufferedReader reader) {
         // Счетчик правильных ответов
         int sumOfValue = 0;
 
