@@ -1,6 +1,7 @@
 package com.nuramov.hw02Questionnaire.questionnaire;
 
 import com.nuramov.hw02Questionnaire.csvParser.CsvParser;
+import com.nuramov.hw02Questionnaire.messageSource.MessagePrinter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -10,9 +11,6 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-/**
- * Класс QuestionnaireImpl реализует интерфейс Questionnaire
- */
 @Service
 public class QuestionnaireImpl implements Questionnaire {
     // Map с вопросами (ключ - номер вопроса (id), значение - тело вопроса)
@@ -21,15 +19,19 @@ public class QuestionnaireImpl implements Questionnaire {
     private final Map<String, String> mapOfAnswers;
     // Map с правильными ответами (ключ - номер вопроса (id), значение - правильный ответ)
     private final Map<String, String> mapOfValuesToCheck;
+    // Используется для вывода локализованных сообщений
+    private MessagePrinter messagePrinter;
 
     @Autowired
     public QuestionnaireImpl(@Value("${QuestionsSource}") String questionsPath,
                              @Value("${AnswersSource}") String answersPath,
                              @Value("${ValuesToCheckSource}") String valuesToCheckPath,
-                             CsvParser csvParser) {
+                             CsvParser csvParser,
+                             MessagePrinter messagePrinter) {
         this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
         this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
         this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
+        this.messagePrinter = messagePrinter;
     }
 
     @Override
@@ -41,7 +43,7 @@ public class QuestionnaireImpl implements Questionnaire {
         // Проходим в цикле по всем вопросам
         for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
             // Выводим вопрос в консоль
-            System.out.println("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
+            messagePrinter.printMessageRu("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
             // Получаем варианты ответа в одну строку
             String answers = mapOfAnswers.get(entry.getKey());
             // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
@@ -65,7 +67,9 @@ public class QuestionnaireImpl implements Questionnaire {
             }
         }
         // Выводим суммарный результат ответов на вопросы в %
-        System.out.println("\nПоздравляю! Вы ответили на " + ((100/mapOfQuestions.size()) * sumOfValue) + "% вопросов верно");
+        messagePrinter.printMessageRu(
+                "\nПоздравляю! Вы ответили на " + ((100/mapOfQuestions.size()) * sumOfValue) + "% вопросов верно"
+        );
     }
 
     /**
@@ -73,9 +77,9 @@ public class QuestionnaireImpl implements Questionnaire {
      * @param arrayOfAnswerOptions - массив с вариантами ответа
      */
     private void printAnswerOptions(String[] arrayOfAnswerOptions) {
-        System.out.println("Выберете один из вариантов ответа. Запишите номер ответа:");
+        messagePrinter.printMessageRu("Выберете один из вариантов ответа. Запишите номер ответа:");
         for (int j = 0; j < arrayOfAnswerOptions.length; j++) {
-            System.out.println("Ответ: №" + (j + 1) + " - " + arrayOfAnswerOptions[j]);
+            messagePrinter.printMessageRu("Ответ: №" + (j + 1) + " - " + arrayOfAnswerOptions[j]);
         }
     }
 
@@ -110,10 +114,10 @@ public class QuestionnaireImpl implements Questionnaire {
                 || enteredValueStr.equals("0")
                 || !Pattern.matches("\\b[\\d]+\\b", enteredValueStr)
                 || Integer.parseInt(enteredValueStr) > number) {
-            System.out.println("Enter a valid id value");
+            messagePrinter.printMessageRu("Введите корректное значение");
             return true;
         } else {
-            System.out.println("Ваш ответ принят");
+            messagePrinter.printMessageRu("Ваш ответ принят");
             return false;
         }
     }

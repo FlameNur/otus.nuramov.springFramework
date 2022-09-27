@@ -10,9 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * Класс CsvParserImpl реализует интерфейс csvParser
- */
 @Service
 public class CsvParserImpl implements CsvParser{
 
