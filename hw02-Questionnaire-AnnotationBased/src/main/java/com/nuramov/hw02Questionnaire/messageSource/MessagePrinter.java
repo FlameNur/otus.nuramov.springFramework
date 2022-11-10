@@ -7,7 +7,7 @@ public interface MessagePrinter {
 
     /**
      * Метод printMessage позволяет вывести локализованное на выбранный язык сообщение
-     * @param message - сообщение для локализации и вывода
+     * @param messageKey - сообщение для локализации и вывода
      */
-    void printMessage(String message);
+    void printMessage(String messageKey);
 }

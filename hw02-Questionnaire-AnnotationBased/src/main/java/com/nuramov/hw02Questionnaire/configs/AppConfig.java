@@ -27,8 +27,8 @@ public class AppConfig {
         messageSource.setDefaultEncoding("UTF-8");
 
         // Устанавливаем default Locale, чтобы выводить сообщения в зависимости от локализации/языка
-        //Locale defaultLocale = Locale.ENGLISH;
-        Locale defaultLocale = new Locale.Builder().setLanguage("ru").build();
+        Locale defaultLocale = Locale.ENGLISH;
+        //Locale defaultLocale = new Locale.Builder().setLanguage("ru").build();
         Locale.setDefault(defaultLocale);
         return messageSource;
     }

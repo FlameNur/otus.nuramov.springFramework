@@ -17,8 +17,8 @@ public class MessagePrinterImpl implements MessagePrinter {
     }
 
     @Override
-    public void printMessage(String message) {
-        // Считываем ключ из messages_ru.properties - MessageToPrint и локализуем значение (сообщение)
-        System.out.println(messageSource.getMessage("MessageToPrint", new String[] {}, Locale.getDefault()));
+    public void printMessage(String messageKey) {
+        // Считываем ключ из messages_ru.properties - message и локализуем значение (сообщение)
+        System.out.print(messageSource.getMessage(messageKey, new String[] {}, Locale.getDefault()));
     }
 }

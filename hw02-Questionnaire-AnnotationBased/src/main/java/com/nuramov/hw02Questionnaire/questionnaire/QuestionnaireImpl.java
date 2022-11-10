@@ -43,20 +43,21 @@ public class QuestionnaireImpl implements Questionnaire {
         // Проходим в цикле по всем вопросам
         for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
             // Выводим вопрос в консоль
-            messagePrinter.printMessage("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
+            System.out.println();
+            messagePrinter.printMessage("Question");
+            System.out.print(entry.getKey() + " - " + entry.getValue());
+
             // Получаем варианты ответа в одну строку
             String answers = mapOfAnswers.get(entry.getKey());
             // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
             String[] arrayOfAnswerOptions = answers.split(",");
-            // Получаем длину массива
-            int arrayLength = arrayOfAnswerOptions.length;
             // Выводим варианты ответа
             printAnswerOptions(arrayOfAnswerOptions);
 
             // Получаем введенный ответ и проверяем его на корректность
             String enteredValueStr = null;
             try {
-                enteredValueStr = getAnswer(reader, arrayLength);
+                enteredValueStr = getAnswer(reader, arrayOfAnswerOptions.length);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -67,9 +68,10 @@ public class QuestionnaireImpl implements Questionnaire {
             }
         }
         // Выводим суммарный результат ответов на вопросы в %
-        messagePrinter.printMessage(
-                "\nПоздравляю! Вы ответили на " + ((100/mapOfQuestions.size()) * sumOfValue) + "% вопросов верно"
-        );
+        System.out.println();
+        messagePrinter.printMessage("YouAnswered");
+        System.out.print(((100/mapOfQuestions.size()) * sumOfValue));
+        messagePrinter.printMessage("ResponseRate");
     }
 
     /**
@@ -77,9 +79,12 @@ public class QuestionnaireImpl implements Questionnaire {
      * @param arrayOfAnswerOptions - массив с вариантами ответа
      */
     private void printAnswerOptions(String[] arrayOfAnswerOptions) {
-        messagePrinter.printMessage("Выберете один из вариантов ответа. Запишите номер ответа:");
+        System.out.println();
+        messagePrinter.printMessage("ChooseTheAnswer");
         for (int j = 0; j < arrayOfAnswerOptions.length; j++) {
-            messagePrinter.printMessage("Ответ: №" + (j + 1) + " - " + arrayOfAnswerOptions[j]);
+            System.out.println();
+            messagePrinter.printMessage("Answer");
+            System.out.print((j + 1) + " - " + arrayOfAnswerOptions[j]);
         }
     }
 
@@ -90,6 +95,7 @@ public class QuestionnaireImpl implements Questionnaire {
      * @return - возвращаем полученный ответ
      */
     private String getAnswer(BufferedReader reader, int arrayLength) throws IOException {
+        System.out.println();
         String enteredValueStr = "";
         boolean correctValue = true;
 
@@ -114,10 +120,11 @@ public class QuestionnaireImpl implements Questionnaire {
                 || enteredValueStr.equals("0")
                 || !Pattern.matches("\\b[\\d]+\\b", enteredValueStr)
                 || Integer.parseInt(enteredValueStr) > number) {
-            messagePrinter.printMessage("Введите корректное значение");
+            messagePrinter.printMessage("EnterValidAnswerValue");
             return true;
         } else {
-            messagePrinter.printMessage("Ваш ответ принят");
+            messagePrinter.printMessage("AnswerAccepted");
+            System.out.println();
             return false;
         }
     }
