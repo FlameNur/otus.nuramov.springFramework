@@ -19,7 +19,7 @@ public class UserAuthorizationImpl implements UserAuthorization{
 
     @Override
     public void runUserAuthorization(BufferedReader reader) {
-        messagePrinter.printMessageRu("Введите ваше имя латинскими буквами: ");
+        messagePrinter.printMessage("Введите ваше имя латинскими буквами: ");
 
         // Считываем ответ и проверяем на корректность
         while(true) {
@@ -40,7 +40,7 @@ public class UserAuthorizationImpl implements UserAuthorization{
         boolean check = true;
         // Имя должно содержать только латинские буквы
         if(!Pattern.matches("\\b[a-zA-Z]+\\b", name)) {
-            messagePrinter.printMessageRu("Введите корректное имя латинскими буквами");
+            messagePrinter.printMessage("Введите корректное имя латинскими буквами");
             check = false;
         }
         return check;

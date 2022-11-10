@@ -43,7 +43,7 @@ public class QuestionnaireImpl implements Questionnaire {
         // Проходим в цикле по всем вопросам
         for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
             // Выводим вопрос в консоль
-            messagePrinter.printMessageRu("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
+            messagePrinter.printMessage("\nВопрос: №" + entry.getKey() + " - " + entry.getValue());
             // Получаем варианты ответа в одну строку
             String answers = mapOfAnswers.get(entry.getKey());
             // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
@@ -67,7 +67,7 @@ public class QuestionnaireImpl implements Questionnaire {
             }
         }
         // Выводим суммарный результат ответов на вопросы в %
-        messagePrinter.printMessageRu(
+        messagePrinter.printMessage(
                 "\nПоздравляю! Вы ответили на " + ((100/mapOfQuestions.size()) * sumOfValue) + "% вопросов верно"
         );
     }
@@ -77,9 +77,9 @@ public class QuestionnaireImpl implements Questionnaire {
      * @param arrayOfAnswerOptions - массив с вариантами ответа
      */
     private void printAnswerOptions(String[] arrayOfAnswerOptions) {
-        messagePrinter.printMessageRu("Выберете один из вариантов ответа. Запишите номер ответа:");
+        messagePrinter.printMessage("Выберете один из вариантов ответа. Запишите номер ответа:");
         for (int j = 0; j < arrayOfAnswerOptions.length; j++) {
-            messagePrinter.printMessageRu("Ответ: №" + (j + 1) + " - " + arrayOfAnswerOptions[j]);
+            messagePrinter.printMessage("Ответ: №" + (j + 1) + " - " + arrayOfAnswerOptions[j]);
         }
     }
 
@@ -114,10 +114,10 @@ public class QuestionnaireImpl implements Questionnaire {
                 || enteredValueStr.equals("0")
                 || !Pattern.matches("\\b[\\d]+\\b", enteredValueStr)
                 || Integer.parseInt(enteredValueStr) > number) {
-            messagePrinter.printMessageRu("Введите корректное значение");
+            messagePrinter.printMessage("Введите корректное значение");
             return true;
         } else {
-            messagePrinter.printMessageRu("Ваш ответ принят");
+            messagePrinter.printMessage("Ваш ответ принят");
             return false;
         }
     }

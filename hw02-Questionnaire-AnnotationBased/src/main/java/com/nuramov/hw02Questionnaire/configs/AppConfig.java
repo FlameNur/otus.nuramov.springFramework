@@ -26,10 +26,10 @@ public class AppConfig {
         messageSource.setBasename("classpath:messages/messages");
         messageSource.setDefaultEncoding("UTF-8");
 
-        // Устанавливаем default locale, чтобы выводить сообщения в зависимости от локализации
-        Locale locale = Locale.UK;
-        //Locale locale = new Locale.Builder().setLanguage("ru").build();
-        messageSource.setDefaultLocale(locale);
+        // Устанавливаем default Locale, чтобы выводить сообщения в зависимости от локализации/языка
+        //Locale defaultLocale = Locale.ENGLISH;
+        Locale defaultLocale = new Locale.Builder().setLanguage("ru").build();
+        Locale.setDefault(defaultLocale);
         return messageSource;
     }
 }

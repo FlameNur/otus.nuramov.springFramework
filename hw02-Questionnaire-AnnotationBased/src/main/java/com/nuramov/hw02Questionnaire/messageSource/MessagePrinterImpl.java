@@ -5,7 +5,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
-import java.util.ResourceBundle;
 
 @Service
 public class MessagePrinterImpl implements MessagePrinter {
@@ -18,15 +17,8 @@ public class MessagePrinterImpl implements MessagePrinter {
     }
 
     @Override
-    public void printMessageRu(String message) {
-        //Locale localeRU = new Locale.Builder().setLanguage("ru").build();
+    public void printMessage(String message) {
         // Считываем ключ из messages_ru.properties - MessageToPrint и локализуем значение (сообщение)
-        //System.out.println(messageSource.getMessage("MessageToPrint", new String[] {message}, localeRU));
-
-        ResourceBundle rb = ResourceBundle.getBundle("messages/messages", Locale.getDefault());
-
-
-
-        System.out.println(rb.getString("MessageToPrint"));
+        System.out.println(messageSource.getMessage("MessageToPrint", new String[] {}, Locale.getDefault()));
     }
 }

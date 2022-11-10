@@ -6,8 +6,8 @@ package com.nuramov.hw02Questionnaire.messageSource;
 public interface MessagePrinter {
 
     /**
-     * Метод printMessageRu позволяет вывести локализованное на русский язык сообщение
+     * Метод printMessage позволяет вывести локализованное на выбранный язык сообщение
      * @param message - сообщение для локализации и вывода
      */
-    void printMessageRu(String message);
+    void printMessage(String message);
 }
