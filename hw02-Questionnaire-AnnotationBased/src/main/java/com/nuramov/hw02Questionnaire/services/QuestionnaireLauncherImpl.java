@@ -10,12 +10,12 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 @Service
-public class ReaderServiceImpl implements ReaderService {
+public class QuestionnaireLauncherImpl implements QuestionnaireLauncher {
     UserAuthorization userAuthorization;
     Questionnaire questionnaire;
 
     @Autowired
-    public ReaderServiceImpl(UserAuthorization userAuthorization, Questionnaire questionnaire) {
+    public QuestionnaireLauncherImpl(UserAuthorization userAuthorization, Questionnaire questionnaire) {
         this.userAuthorization = userAuthorization;
         this.questionnaire = questionnaire;
     }

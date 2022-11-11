@@ -37,7 +37,7 @@ public class QuestionnaireImpl implements Questionnaire {
     @Override
     public void runQuestionnaire(BufferedReader reader) {
         // Счетчик правильных ответов
-        int sumOfValue = 0;
+        int rightAnswerCount = 0;
 
         // Ответы вводим через консоль
         // Проходим в цикле по всем вопросам
@@ -64,13 +64,13 @@ public class QuestionnaireImpl implements Questionnaire {
 
             // Проверяем правильность введенного ответа
             if(handleAnswer(enteredValueStr, entry.getKey())) {
-                sumOfValue++;
+                rightAnswerCount++;
             }
         }
         // Выводим суммарный результат ответов на вопросы в %
         System.out.println();
         messagePrinter.printMessage("YouAnswered");
-        System.out.print(((100/mapOfQuestions.size()) * sumOfValue));
+        System.out.print(((100/mapOfQuestions.size()) * rightAnswerCount));
         messagePrinter.printMessage("ResponseRate");
     }
 

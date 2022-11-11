@@ -20,7 +20,7 @@ public class CsvParserImpl implements CsvParser{
         if(filePath != null) {
             mapOfItems = getInfoAsMap(filePath);
         } else {
-            throw new IllegalArgumentException("File not found!");
+            throw new IllegalArgumentException("File path not specified");
         }
         return mapOfItems;
     }
