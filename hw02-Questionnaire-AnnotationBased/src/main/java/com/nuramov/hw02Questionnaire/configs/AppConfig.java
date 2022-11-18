@@ -43,7 +43,7 @@ public class AppConfig {
         Locale locale = Locale.ENGLISH;
         // Считываем из config.properties заданную Locale
         try(FileInputStream fileInputStream = new FileInputStream(
-                "hw02-Questionnaire-AnnotationBased/src/main/resources/configs/config.properties")) {
+                "hw02-Questionnaire-AnnotationBased/src/main/resources/config/config.properties")) {
             property.load(fileInputStream);
             locale = new Locale(property.getProperty("DefaultLocale"));
         } catch (IOException e) {

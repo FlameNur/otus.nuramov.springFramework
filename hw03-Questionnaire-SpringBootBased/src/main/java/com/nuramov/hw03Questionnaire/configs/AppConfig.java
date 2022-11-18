@@ -1,21 +1,20 @@
 package com.nuramov.hw03Questionnaire.configs;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.core.env.Environment;
 
-import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Locale;
-import java.util.Properties;
+import java.util.Objects;
 
 @Configuration
-@ComponentScan("com.nuramov.hw03Questionnaire")
-@PropertySource({"classpath:resources.properties", "classpath:configs/config.properties"})
 public class AppConfig {
+
+    @Autowired
+    private Environment environment;
 
     @Bean
     /**
@@ -29,26 +28,8 @@ public class AppConfig {
         messageSource.setBasename("classpath:messages/messages");
         messageSource.setDefaultEncoding("UTF-8");
 
-        Locale.setDefault(getDefaultLocale());
+        // Задаем дефолтный язык из application.properties, чтобы выводить сообщения в зависимости от локализации/языка
+        Locale.setDefault(Locale.forLanguageTag(Objects.requireNonNull(environment.getProperty("DefaultLocale"))));
         return messageSource;
-    }
-
-    /**
-     * Метод getDefaultLocale возвращает Locale, заданный в config.properties,
-     * чтобы выводить сообщения в зависимости от локализации/языка
-     * @return - Locale, заданная в config.properties
-     */
-    private Locale getDefaultLocale() {
-        Properties property = new Properties();
-        Locale locale = Locale.ENGLISH;
-        // Считываем из config.properties заданную Locale
-        try(FileInputStream fileInputStream = new FileInputStream(
-                "hw03-Questionnaire-SpringBootBased/src/main/resources/configs/config.properties")) {
-            property.load(fileInputStream);
-            locale = new Locale(property.getProperty("DefaultLocale"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return locale;
     }
 }
