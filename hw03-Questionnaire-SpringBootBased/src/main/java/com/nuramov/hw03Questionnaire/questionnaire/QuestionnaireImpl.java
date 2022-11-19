@@ -1,9 +1,10 @@
 package com.nuramov.hw03Questionnaire.questionnaire;
 
-import com.nuramov.hw03Questionnaire.csvParser.CsvParser;
+import com.nuramov.hw03Questionnaire.answers.Answers;
+import com.nuramov.hw03Questionnaire.correctAnswer.CorrectAnswer;
 import com.nuramov.hw03Questionnaire.messageSource.MessagePrinter;
+import com.nuramov.hw03Questionnaire.question.Question;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -13,65 +14,59 @@ import java.util.regex.Pattern;
 
 @Service
 public class QuestionnaireImpl implements Questionnaire {
-    // Map с вопросами (ключ - номер вопроса (id), значение - тело вопроса)
-    private final Map<String, String> mapOfQuestions;
-    // Map с ответами (ключ - номер вопроса (id), значение - варианты ответов, разделенные запятыми)
-    private final Map<String, String> mapOfAnswers;
-    // Map с правильными ответами (ключ - номер вопроса (id), значение - правильный ответ)
-    private final Map<String, String> mapOfValuesToCheck;
+
+    private final Question question;
+    private final Answers answers;
+    private final CorrectAnswer correctAnswer;
     // Используется для вывода локализованных сообщений
-    private MessagePrinter messagePrinter;
+    private final MessagePrinter messagePrinter;
 
     @Autowired
-    public QuestionnaireImpl(@Value("${QuestionsSource}") String questionsPath,
-                             @Value("${AnswersSource}") String answersPath,
-                             @Value("${ValuesToCheckSource}") String valuesToCheckPath,
-                             CsvParser csvParser,
+    public QuestionnaireImpl(Question question,
+                             Answers answers,
+                             CorrectAnswer correctAnswer,
                              MessagePrinter messagePrinter) {
-        this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
-        this.mapOfAnswers = csvParser.getFileFromResourceAsMap(answersPath);
-        this.mapOfValuesToCheck = csvParser.getFileFromResourceAsMap(valuesToCheckPath);
+
+        this.question = question;
+        this.answers = answers;
+        this.correctAnswer = correctAnswer;
         this.messagePrinter = messagePrinter;
     }
 
     @Override
     public void runQuestionnaire(BufferedReader reader) {
-        // Счетчик правильных ответов
         int rightAnswerCount = 0;
 
         // Ответы вводим через консоль
         // Проходим в цикле по всем вопросам
-        for(Map.Entry<String, String> entry : mapOfQuestions.entrySet()) {
-            // Выводим вопрос в консоль
-            System.out.println();
-            messagePrinter.printMessage("Question");
-            System.out.print(entry.getKey() + " - " + entry.getValue());
-
-            // Получаем варианты ответа в одну строку
-            String answers = mapOfAnswers.get(entry.getKey());
-            // Разделяем строку с вариантами ответов для вывода каждого варианта ответа отдельно
-            String[] arrayOfAnswerOptions = answers.split(",");
-            // Выводим варианты ответа
-            printAnswerOptions(arrayOfAnswerOptions);
+        for(Map.Entry<String, String> entry : question.getMapOfQuestions().entrySet()) {
+            printQuestions(entry.getKey(), entry.getValue());
+            printAnswerOptions(answers.getAnswers(entry.getKey()));
 
             // Получаем введенный ответ и проверяем его на корректность
             String enteredValueStr = null;
             try {
-                enteredValueStr = getAnswer(reader, arrayOfAnswerOptions.length);
+                enteredValueStr = getAnswer(reader, answers.getAnswers(entry.getKey()).length);
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             // Проверяем правильность введенного ответа
             if(handleAnswer(enteredValueStr, entry.getKey())) {
                 rightAnswerCount++;
             }
         }
-        // Выводим суммарный результат ответов на вопросы в %
+        printResultOfQuestionnaire(rightAnswerCount);
+    }
+
+    /**
+     * Метод printQuestions выводит вопрос на консоль
+     * @param numberOfQuestion - номер вопроса
+     * @param question - вопрос
+     */
+    private void printQuestions(String numberOfQuestion, String question) {
         System.out.println();
-        messagePrinter.printMessage("YouAnswered");
-        System.out.print(((100/mapOfQuestions.size()) * rightAnswerCount));
-        messagePrinter.printMessage("ResponseRate");
+        messagePrinter.printMessage("Question");
+        System.out.print(numberOfQuestion + " - " + question);
     }
 
     /**
@@ -137,7 +132,18 @@ public class QuestionnaireImpl implements Questionnaire {
      */
     private boolean handleAnswer(String enteredValueStr, String numberOfQuestion) {
         // Проверяем правильность ответа
-        String correctAnswers = mapOfValuesToCheck.get(numberOfQuestion);
-        return enteredValueStr.equals(correctAnswers);
+        String correctAnswer = this.correctAnswer.getCorrectAnswer(numberOfQuestion);
+        return enteredValueStr.equals(correctAnswer);
+    }
+
+    /**
+     * Метод printResultOfQuestionnaire выводит суммарный результат ответов на вопросы в %
+     * @param rightAnswerCount - количество правильных ответов
+     */
+    private void printResultOfQuestionnaire(int rightAnswerCount) {
+        System.out.println();
+        messagePrinter.printMessage("YouAnswered");
+        System.out.print(((100/question.getMapOfQuestions().size()) * rightAnswerCount));
+        messagePrinter.printMessage("ResponseRate");
     }
 }
