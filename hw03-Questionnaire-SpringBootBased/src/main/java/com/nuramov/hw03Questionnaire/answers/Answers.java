@@ -10,5 +10,12 @@ public interface Answers {
      * @param numberOfQuestion - номер вопроса
      * @return - массив ответов
      */
-    String[] getAnswers(String numberOfQuestion);
+    String[] getAnswerOptions(String numberOfQuestion);
+
+    /**
+     * Метод getCorrectAnswer выдает правильный ответ на заданный вопрос
+     * @param numberOfQuestion - номер вопроса
+     * @return - правильный ответ
+     */
+    String getCorrectAnswer(String numberOfQuestion);
 }

@@ -1,7 +1,5 @@
 package com.nuramov.hw03Questionnaire.questionnaire;
 
-import com.nuramov.hw03Questionnaire.answers.Answers;
-import com.nuramov.hw03Questionnaire.correctAnswer.CorrectAnswer;
 import com.nuramov.hw03Questionnaire.messageSource.MessagePrinter;
 import com.nuramov.hw03Questionnaire.question.Question;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,20 +14,12 @@ import java.util.regex.Pattern;
 public class QuestionnaireImpl implements Questionnaire {
 
     private final Question question;
-    private final Answers answers;
-    private final CorrectAnswer correctAnswer;
     // Используется для вывода локализованных сообщений
     private final MessagePrinter messagePrinter;
 
     @Autowired
-    public QuestionnaireImpl(Question question,
-                             Answers answers,
-                             CorrectAnswer correctAnswer,
-                             MessagePrinter messagePrinter) {
-
+    public QuestionnaireImpl(Question question, MessagePrinter messagePrinter) {
         this.question = question;
-        this.answers = answers;
-        this.correctAnswer = correctAnswer;
         this.messagePrinter = messagePrinter;
     }
 
@@ -41,12 +31,12 @@ public class QuestionnaireImpl implements Questionnaire {
         // Проходим в цикле по всем вопросам
         for(Map.Entry<String, String> entry : question.getMapOfQuestions().entrySet()) {
             printQuestions(entry.getKey(), entry.getValue());
-            printAnswerOptions(answers.getAnswers(entry.getKey()));
+            printAnswerOptions(question.getAnswerOptions(entry.getKey()));
 
             // Получаем введенный ответ и проверяем его на корректность
             String enteredValueStr = null;
             try {
-                enteredValueStr = getAnswer(reader, answers.getAnswers(entry.getKey()).length);
+                enteredValueStr = getAnswer(reader, question.getAnswerOptions(entry.getKey()).length);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -132,7 +122,7 @@ public class QuestionnaireImpl implements Questionnaire {
      */
     private boolean handleAnswer(String enteredValueStr, String numberOfQuestion) {
         // Проверяем правильность ответа
-        String correctAnswer = this.correctAnswer.getCorrectAnswer(numberOfQuestion);
+        String correctAnswer = question.getCorrectAnswer(numberOfQuestion);
         return enteredValueStr.equals(correctAnswer);
     }
 
