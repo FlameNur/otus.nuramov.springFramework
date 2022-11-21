@@ -35,4 +35,9 @@ public class QuestionImpl implements Question{
     public String getCorrectAnswer(String numberOfQuestion) {
         return answers.getCorrectAnswer(numberOfQuestion);
     }
+
+    @Override
+    public String getQuestion(String numberOfQuestion) {
+        return mapOfQuestions.get(numberOfQuestion);
+    }
 }

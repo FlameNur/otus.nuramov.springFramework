@@ -30,18 +30,20 @@ public class QuestionnaireImpl implements Questionnaire {
         // Ответы вводим через консоль
         // Проходим в цикле по всем вопросам
         for(Map.Entry<String, String> entry : question.getMapOfQuestions().entrySet()) {
-            printQuestions(entry.getKey(), entry.getValue());
-            printAnswerOptions(question.getAnswerOptions(entry.getKey()));
+            String numberOfQuestion = entry.getKey();
+
+            printQuestions(numberOfQuestion);
+            printAnswerOptions(numberOfQuestion);
 
             // Получаем введенный ответ и проверяем его на корректность
-            String enteredValueStr = null;
+            String enteredValue = null;
             try {
-                enteredValueStr = getAnswer(reader, question.getAnswerOptions(entry.getKey()).length);
+                enteredValue = getAnswer(reader, numberOfQuestion);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             // Проверяем правильность введенного ответа
-            if(handleAnswer(enteredValueStr, entry.getKey())) {
+            if(handleAnswer(enteredValue, numberOfQuestion)) {
                 rightAnswerCount++;
             }
         }
@@ -51,19 +53,20 @@ public class QuestionnaireImpl implements Questionnaire {
     /**
      * Метод printQuestions выводит вопрос на консоль
      * @param numberOfQuestion - номер вопроса
-     * @param question - вопрос
      */
-    private void printQuestions(String numberOfQuestion, String question) {
+    private void printQuestions(String numberOfQuestion) {
         System.out.println();
         messagePrinter.printMessage("Question");
-        System.out.print(numberOfQuestion + " - " + question);
+        System.out.print(numberOfQuestion + " - " + question.getQuestion(numberOfQuestion));
     }
 
     /**
      * Метод printAnswerOptions позволяет печатать варианты ответов в консоль
-     * @param arrayOfAnswerOptions - массив с вариантами ответа
+     * @param numberOfQuestion - номер вопроса
      */
-    private void printAnswerOptions(String[] arrayOfAnswerOptions) {
+    private void printAnswerOptions(String numberOfQuestion) {
+        String[] arrayOfAnswerOptions = question.getAnswerOptions(numberOfQuestion);
+
         System.out.println();
         messagePrinter.printMessage("ChooseTheAnswer");
         for (int j = 0; j < arrayOfAnswerOptions.length; j++) {
@@ -76,35 +79,37 @@ public class QuestionnaireImpl implements Questionnaire {
     /**
      * Метод getAnswer позволяет получить введенный ответ и проверить его на корректность
      * @param reader - буферизированный поток на чтение символов, в нашем случае - ответа
-     * @param arrayLength - - количество вариантов ответа
+     * @param numberOfQuestion - номер вопроса
      * @return - возвращаем полученный ответ
      */
-    private String getAnswer(BufferedReader reader, int arrayLength) throws IOException {
+    private String getAnswer(BufferedReader reader, String numberOfQuestion) throws IOException {
         System.out.println();
-        String enteredValueStr = "";
+        String enteredValue = "";
         boolean correctValue = true;
 
         while (correctValue) {
             // Считываем ответ
-            enteredValueStr = reader.readLine();
+            enteredValue = reader.readLine();
             // Проверяем корректность введенного ответа: true-некорректный, false-корректный
-            correctValue = checkAnswer(enteredValueStr, arrayLength);
+            correctValue = checkAnswer(enteredValue, numberOfQuestion);
         }
-        return enteredValueStr;
+        return enteredValue;
     }
 
     /**
      * Метод checkAnswer позволяет проверить корректность введенного ответа
-     * @param enteredValueStr - введенный ответ
-     * @param number - количество вариантов ответа
+     * @param enteredValue - введенный ответ
+     * @param numberOfQuestion - номер вопроса
      * @return - возвращает false, если введен ответ, чтобы прервать цикл и запустить следующий вопрос
      */
-    private boolean checkAnswer(String enteredValueStr, int number) {
+    private boolean checkAnswer(String enteredValue, String numberOfQuestion) {
+        int numberOfAnswerOptions = question.getAnswerOptions(numberOfQuestion).length;
+
         // Если пустое поле, "id = 0" или "нечисловое значение", то выдаем соответствующее сообщение
-        if(enteredValueStr.isEmpty()
-                || enteredValueStr.equals("0")
-                || !Pattern.matches("\\b[\\d]+\\b", enteredValueStr)
-                || Integer.parseInt(enteredValueStr) > number) {
+        if(enteredValue.isEmpty()
+                || enteredValue.equals("0")
+                || !Pattern.matches("\\b[\\d]+\\b", enteredValue)
+                || Integer.parseInt(enteredValue) > numberOfAnswerOptions) {
             messagePrinter.printMessage("EnterValidAnswerValue");
             return true;
         } else {

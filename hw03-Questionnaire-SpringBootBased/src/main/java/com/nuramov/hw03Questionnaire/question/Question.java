@@ -27,4 +27,11 @@ public interface Question {
      * @return - правильный ответ
      */
     String getCorrectAnswer(String numberOfQuestion);
+
+    /**
+     * Метод getQuestion выдает вопрос по номеру вопроса
+     * @param numberOfQuestion - номер вопроса
+     * @return - тело вопроса
+     */
+    String getQuestion(String numberOfQuestion);
 }
