@@ -27,23 +27,15 @@ public class QuestionnaireImpl implements Questionnaire {
     public void runQuestionnaire(BufferedReader reader) {
         int rightAnswerCount = 0;
 
-        // Ответы вводим через консоль
-        // Проходим в цикле по всем вопросам
+        // Ответы вводим через консоль. Проходим в цикле по всем вопросам
         for(Map.Entry<String, String> entry : question.getMapOfQuestions().entrySet()) {
             String numberOfQuestion = entry.getKey();
 
-            printQuestions(numberOfQuestion);
+            printQuestion(numberOfQuestion);
             printAnswerOptions(numberOfQuestion);
 
-            // Получаем введенный ответ и проверяем его на корректность
-            String enteredValue = null;
-            try {
-                enteredValue = getAnswer(reader, numberOfQuestion);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             // Проверяем правильность введенного ответа
-            if(handleAnswer(enteredValue, numberOfQuestion)) {
+            if(getAndHandleAnswer(reader, numberOfQuestion)) {
                 rightAnswerCount++;
             }
         }
@@ -51,10 +43,10 @@ public class QuestionnaireImpl implements Questionnaire {
     }
 
     /**
-     * Метод printQuestions выводит вопрос на консоль
+     * Метод printQuestion выводит вопрос на консоль
      * @param numberOfQuestion - номер вопроса
      */
-    private void printQuestions(String numberOfQuestion) {
+    private void printQuestion(String numberOfQuestion) {
         System.out.println();
         messagePrinter.printMessage("Question");
         System.out.print(numberOfQuestion + " - " + question.getQuestion(numberOfQuestion));
@@ -74,6 +66,26 @@ public class QuestionnaireImpl implements Questionnaire {
             messagePrinter.printMessage("Answer");
             System.out.print((j + 1) + " - " + arrayOfAnswerOptions[j]);
         }
+    }
+
+    /**
+     * Метод getAndHandleAnswer принимает и обрабатывает ответ
+     * @param reader - буферизированный поток на чтение символов, в нашем случае - ответа
+     * @param numberOfQuestion - номер вопроса
+     * @return - возвращает true, если ответ правильный и false, если ответ не правильный
+     */
+    private boolean getAndHandleAnswer(BufferedReader reader, String numberOfQuestion) {
+        // Получаем введенный ответ и проверяем его на корректность
+        String enteredValue = null;
+        try {
+            enteredValue = getAnswer(reader, numberOfQuestion);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // Проверяем правильность введенного ответа
+        String correctAnswer = question.getCorrectAnswer(numberOfQuestion);
+        assert enteredValue != null;
+        return enteredValue.equals(correctAnswer);
     }
 
     /**
@@ -117,18 +129,6 @@ public class QuestionnaireImpl implements Questionnaire {
             System.out.println();
             return false;
         }
-    }
-
-    /**
-     * Метод handleAnswer позволяет проверить правильность введенного ответа
-     * @param enteredValueStr - введенный ответ
-     * @param numberOfQuestion - текущий номер (id) вопроса/ответа по порядку
-     * @return - возвращает true, если ответ правильный и false, если ответ не правильный
-     */
-    private boolean handleAnswer(String enteredValueStr, String numberOfQuestion) {
-        // Проверяем правильность ответа
-        String correctAnswer = question.getCorrectAnswer(numberOfQuestion);
-        return enteredValueStr.equals(correctAnswer);
     }
 
     /**
