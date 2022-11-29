@@ -1,37 +1,47 @@
 package com.nuramov.hw03Questionnaire.question;
 
-import java.util.Map;
+import org.springframework.stereotype.Service;
 
 /**
- * Интерфейс Question позволяет получить все вопросы в виде map
- * (ключ - номер вопроса, значение - тело вопроса)
+ * Класс Question представляет собой сущность вопроса для опросника с соответствующими полями
  */
-public interface Question {
+@Service
+public class Question {
 
-    /**
-     * Метод getMapOfQuestions возвращает map с вопросами
-     * @return - map с вопросами
-     */
-    Map<String, String> getMapOfQuestions();
+    private String numberOfQuestion;
+    private String question;
+    private String[] answerOptions;
+    private String correctAnswer;
 
-    /**
-     * Метод getAnswers возвращает массив ответов по номеру вопроса
-     * @param numberOfQuestion - номер вопроса
-     * @return - массив ответов
-     */
-    String[] getAnswerOptions(String numberOfQuestion);
+    public void setNumberOfQuestion(String numberOfQuestion) {
+        this.numberOfQuestion = numberOfQuestion;
+    }
 
-    /**
-     * Метод getCorrectAnswer выдает правильный ответ на заданный вопрос
-     * @param numberOfQuestion - номер вопроса
-     * @return - правильный ответ
-     */
-    String getCorrectAnswer(String numberOfQuestion);
+    public void setQuestion(String question) {
+        this.question = question;
+    }
 
-    /**
-     * Метод getQuestion выдает вопрос по номеру вопроса
-     * @param numberOfQuestion - номер вопроса
-     * @return - тело вопроса
-     */
-    String getQuestion(String numberOfQuestion);
+    public void setAnswerOptions(String[] answerOptions) {
+        this.answerOptions = answerOptions;
+    }
+
+    public void setCorrectAnswer(String correctAnswer) {
+        this.correctAnswer = correctAnswer;
+    }
+
+    public String getNumberOfQuestion() {
+        return numberOfQuestion;
+    }
+
+    public String getQuestion() {
+        return question;
+    }
+
+    public String[] getAnswerOptions() {
+        return answerOptions;
+    }
+
+    public String getCorrectAnswer() {
+        return correctAnswer;
+    }
 }
