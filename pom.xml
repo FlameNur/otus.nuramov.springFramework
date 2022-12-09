@@ -19,11 +19,11 @@
     <modules>
         <module>hw01-Questionnaire-XMLBased</module>
         <module>hw02-Questionnaire-AnnotationBased</module>
+        <module>hw03-Questionnaire-SpringBootBased</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
-
 </project>
