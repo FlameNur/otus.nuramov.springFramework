@@ -1,9 +1,9 @@
-package com.nuramov.hw03Questionnaire.answers;
+package com.nuramov.hw03Questionnaire.handlers;
 
 /**
- * Интерфейс Answers позволяет получить массив ответов по номеру вопроса
+ * Интерфейс AnswerHandler позволяет получить массив ответов по номеру вопроса
  */
-public interface Answers {
+public interface AnswerHandler {
 
     /**
      * Метод getAnswers возвращает массив ответов по номеру вопроса

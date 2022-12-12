@@ -1,8 +1,10 @@
 package com.nuramov.hw03Questionnaire.questionnaire;
 
+import com.nuramov.hw03Questionnaire.handlers.QuestionHandler;
 import com.nuramov.hw03Questionnaire.messageSource.MessagePrinter;
-import com.nuramov.hw03Questionnaire.question.Question;
-import com.nuramov.hw03Questionnaire.questionService.QuestionService;
+import com.nuramov.hw03Questionnaire.entities.Question;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +20,8 @@ public class QuestionnaireImpl implements Questionnaire {
     private final MessagePrinter messagePrinter;
 
     @Autowired
-    public QuestionnaireImpl(QuestionService questionService, MessagePrinter messagePrinter) {
-        this.listOfQuestions = questionService.getQuestions();
+    public QuestionnaireImpl(QuestionHandler questionHandler, MessagePrinter messagePrinter) {
+        this.listOfQuestions = questionHandler.getQuestions();
         this.messagePrinter = messagePrinter;
     }
 
@@ -54,7 +56,8 @@ public class QuestionnaireImpl implements Questionnaire {
      * @param question - сущность вопроса
      */
     private void printAnswerOptions(Question question) {
-        String[] arrayOfAnswerOptions = question.getAnswerOptions();
+        //String[] arrayOfAnswerOptions = question.getAnswerOptions();
+        String[] arrayOfAnswerOptions=null;
 
         System.out.println();
         messagePrinter.printMessage("ChooseTheAnswer");
@@ -112,7 +115,8 @@ public class QuestionnaireImpl implements Questionnaire {
      * @return - возвращает false, если введен ответ, чтобы прервать цикл и запустить следующий вопрос
      */
     private boolean checkAnswer(String enteredValue, Question question) {
-        int numberOfAnswerOptions = question.getAnswerOptions().length;
+        //int numberOfAnswerOptions = question.getAnswerOptions().length;
+        int numberOfAnswerOptions=10;
 
         // Если пустое поле, "id = 0" или "нечисловое значение", то выдаем соответствующее сообщение
         if(enteredValue.isEmpty()

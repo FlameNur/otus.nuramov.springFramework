@@ -1,24 +1,25 @@
-package com.nuramov.hw03Questionnaire.questionService;
+package com.nuramov.hw03Questionnaire.handlers;
 
-import com.nuramov.hw03Questionnaire.answers.Answers;
 import com.nuramov.hw03Questionnaire.csvParser.CsvParser;
-import com.nuramov.hw03Questionnaire.question.Question;
+import com.nuramov.hw03Questionnaire.entities.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 @Service
-public class QuestionServiceImpl implements QuestionService {
+public class QuestionHandlerImpl implements QuestionHandler{
 
     // Map с вопросами (ключ - номер вопроса, значение - тело вопроса)
     private final Map<String, String> mapOfQuestions;
-    private final Answers answers;
+    //private final Answers answers;
 
     @Autowired
-    public QuestionServiceImpl(@Value("${QuestionsSource}") String questionsPath, Answers answers, CsvParser csvParser) {
-        this.answers = answers;
+    public QuestionHandlerImpl(@Value("${QuestionsSource}") String questionsPath, CsvParser csvParser) {
+        //this.answers = answers;
         this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
     }
 
@@ -34,8 +35,8 @@ public class QuestionServiceImpl implements QuestionService {
             Question question = new Question();
             question.setNumberOfQuestion(numberOfQuestion);
             question.setQuestion(questionValue);
-            question.setAnswerOptions(answers.getAnswerOptions(numberOfQuestion));
-            question.setCorrectAnswer(answers.getCorrectAnswer(numberOfQuestion));
+            //question.setAnswerOptions(answers.getAnswerOptions(numberOfQuestion));
+            //question.setCorrectAnswer(answers.getCorrectAnswer(numberOfQuestion));
 
             listOfQuestions.add(positionInList, question);
             positionInList++;

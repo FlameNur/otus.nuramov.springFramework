@@ -1,4 +1,4 @@
-package com.nuramov.hw03Questionnaire.services;
+package com.nuramov.hw03Questionnaire.launcher;
 
 import com.nuramov.hw03Questionnaire.questionnaire.Questionnaire;
 import com.nuramov.hw03Questionnaire.userAuthorization.UserAuthorization;
