@@ -12,8 +12,8 @@ public class Question {
 
     private String numberOfQuestion;
     private String question;
-    private List<String> answers;
-    private String correctAnswer;
+    private List<Answer> answers;
+    private CorrectAnswer correctAnswer;
 
     public String getNumberOfQuestion() {
         return numberOfQuestion;
@@ -31,19 +31,19 @@ public class Question {
         this.question = question;
     }
 
-    public List<String> getAnswers() {
+    public List<Answer> getAnswers() {
         return answers;
     }
 
-    public void setAnswers(List<String> answers) {
+    public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
 
-    public String getCorrectAnswer() {
+    public CorrectAnswer getCorrectAnswer() {
         return correctAnswer;
     }
 
-    public void setCorrectAnswer(String correctAnswer) {
+    public void setCorrectAnswer(CorrectAnswer correctAnswer) {
         this.correctAnswer = correctAnswer;
     }
 }

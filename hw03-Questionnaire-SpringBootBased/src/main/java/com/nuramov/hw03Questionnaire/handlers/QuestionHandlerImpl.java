@@ -15,11 +15,13 @@ public class QuestionHandlerImpl implements QuestionHandler{
 
     // Map с вопросами (ключ - номер вопроса, значение - тело вопроса)
     private final Map<String, String> mapOfQuestions;
-    //private final Answers answers;
+    private final AnswerHandler answerHandler;
 
     @Autowired
-    public QuestionHandlerImpl(@Value("${QuestionsSource}") String questionsPath, CsvParser csvParser) {
-        //this.answers = answers;
+    public QuestionHandlerImpl(@Value("${QuestionsSource}") String questionsPath,
+                               CsvParser csvParser,
+                               AnswerHandler answerHandler) {
+        this.answerHandler = answerHandler;
         this.mapOfQuestions = csvParser.getFileFromResourceAsMap(questionsPath);
     }
 
@@ -35,8 +37,8 @@ public class QuestionHandlerImpl implements QuestionHandler{
             Question question = new Question();
             question.setNumberOfQuestion(numberOfQuestion);
             question.setQuestion(questionValue);
-            //question.setAnswerOptions(answers.getAnswerOptions(numberOfQuestion));
-            //question.setCorrectAnswer(answers.getCorrectAnswer(numberOfQuestion));
+            question.setAnswers(answerHandler.getAnswers(numberOfQuestion));
+            question.setCorrectAnswer(answerHandler.getCorrectAnswer(numberOfQuestion));
 
             listOfQuestions.add(positionInList, question);
             positionInList++;

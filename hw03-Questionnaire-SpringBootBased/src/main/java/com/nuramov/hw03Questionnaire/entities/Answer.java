@@ -1,5 +1,8 @@
 package com.nuramov.hw03Questionnaire.entities;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class Answer {
 
     private String answerValue;

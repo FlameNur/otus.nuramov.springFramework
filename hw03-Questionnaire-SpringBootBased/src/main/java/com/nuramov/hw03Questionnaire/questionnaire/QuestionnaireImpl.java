@@ -1,5 +1,6 @@
 package com.nuramov.hw03Questionnaire.questionnaire;
 
+import com.nuramov.hw03Questionnaire.entities.Answer;
 import com.nuramov.hw03Questionnaire.handlers.QuestionHandler;
 import com.nuramov.hw03Questionnaire.messageSource.MessagePrinter;
 import com.nuramov.hw03Questionnaire.entities.Question;
@@ -56,15 +57,17 @@ public class QuestionnaireImpl implements Questionnaire {
      * @param question - сущность вопроса
      */
     private void printAnswerOptions(Question question) {
-        //String[] arrayOfAnswerOptions = question.getAnswerOptions();
-        String[] arrayOfAnswerOptions=null;
+        List<Answer> listOfAnswerOptions = question.getAnswers();
 
         System.out.println();
         messagePrinter.printMessage("ChooseTheAnswer");
-        for (int j = 0; j < arrayOfAnswerOptions.length; j++) {
+
+        int number = 1;
+        for(Answer answer : listOfAnswerOptions) {
             System.out.println();
             messagePrinter.printMessage("Answer");
-            System.out.print((j + 1) + " - " + arrayOfAnswerOptions[j]);
+            System.out.println(number + " - " + answer.getAnswerValue());
+            number++;
         }
     }
 
@@ -82,10 +85,10 @@ public class QuestionnaireImpl implements Questionnaire {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        // Проверяем правильность введенного ответа
-        String correctAnswer = question.getCorrectAnswer();
+        // Проверяем правильность введенного ответа и выводим результат сравнения
+        String correctAnswerValue = question.getCorrectAnswer().getCorrectAnswerValue();
         assert enteredValue != null;
-        return enteredValue.equals(correctAnswer);
+        return enteredValue.equals(correctAnswerValue);
     }
 
     /**
@@ -96,39 +99,37 @@ public class QuestionnaireImpl implements Questionnaire {
      */
     private String getAnswer(BufferedReader reader, Question question) throws IOException {
         System.out.println();
-        String enteredValue = "";
-        boolean correctValue = true;
+        String inputValue = "";
+        boolean validationOfInputValue = false;
 
-        while (correctValue) {
-            // Считываем ответ
-            enteredValue = reader.readLine();
-            // Проверяем корректность введенного ответа: true-некорректный, false-корректный
-            correctValue = checkAnswer(enteredValue, question);
+        while (!validationOfInputValue) {
+            inputValue = reader.readLine();
+            // Проверяем корректность введенного ответа: true-корректный, false-некорректный
+            validationOfInputValue = checkAnswer(inputValue, question);
         }
-        return enteredValue;
+        return inputValue;
     }
 
     /**
      * Метод checkAnswer позволяет проверить корректность введенного ответа
-     * @param enteredValue - введенный ответ
+     * @param inputValue - введенный ответ
      * @param question - сущность вопроса
-     * @return - возвращает false, если введен ответ, чтобы прервать цикл и запустить следующий вопрос
+     * @return - возвращает true, если введенный ответ проходит проверку
      */
-    private boolean checkAnswer(String enteredValue, Question question) {
-        //int numberOfAnswerOptions = question.getAnswerOptions().length;
-        int numberOfAnswerOptions=10;
+    private boolean checkAnswer(String inputValue, Question question) {
+        int amountOfAnswerOptions = question.getAnswers().size();
 
         // Если пустое поле, "id = 0" или "нечисловое значение", то выдаем соответствующее сообщение
-        if(enteredValue.isEmpty()
-                || enteredValue.equals("0")
-                || !Pattern.matches("\\b[\\d]+\\b", enteredValue)
-                || Integer.parseInt(enteredValue) > numberOfAnswerOptions) {
+        if(inputValue.isEmpty()
+                || inputValue.equals("0")
+                || !Pattern.matches("\\b[\\d]+\\b", inputValue)
+                || Integer.parseInt(inputValue) > amountOfAnswerOptions) {
             messagePrinter.printMessage("EnterValidAnswerValue");
-            return true;
+            return false;
         } else {
             messagePrinter.printMessage("AnswerAccepted");
             System.out.println();
-            return false;
+            return true;
         }
     }
 

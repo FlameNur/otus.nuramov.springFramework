@@ -1,21 +1,26 @@
 package com.nuramov.hw03Questionnaire.handlers;
 
+import com.nuramov.hw03Questionnaire.entities.Answer;
+import com.nuramov.hw03Questionnaire.entities.CorrectAnswer;
+
+import java.util.List;
+
 /**
  * Интерфейс AnswerHandler позволяет получить массив ответов по номеру вопроса
  */
 public interface AnswerHandler {
 
     /**
-     * Метод getAnswers возвращает массив ответов по номеру вопроса
+     * Метод getAnswers возвращает список ответов по номеру вопроса
      * @param numberOfQuestion - номер вопроса
-     * @return - массив ответов
+     * @return - список ответов
      */
-    String[] getAnswerOptions(String numberOfQuestion);
+    List<Answer> getAnswers(String numberOfQuestion);
 
     /**
      * Метод getCorrectAnswer выдает правильный ответ на заданный вопрос
      * @param numberOfQuestion - номер вопроса
      * @return - правильный ответ
      */
-    String getCorrectAnswer(String numberOfQuestion);
+    CorrectAnswer getCorrectAnswer(String numberOfQuestion);
 }
