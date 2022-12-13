@@ -1,3 +1,20 @@
+HELP.md
+*.mvn/wrapper/maven-wrapper.jar
+*.mvn/wrapper/maven-wrapper.properties
+hw03-Questionnaire-SpringBootBased/.mvn/wrapper
+hw03-Questionnaire-SpringBootBased/.mvn/wrapper/maven-wrapper.properties
+mvnw
+mvnw.cmd
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
 ### Java template
 # Compiled class file
 *.class
@@ -23,6 +40,7 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 
+### IntelliJ IDEA ###
 **/.idea/
 **/.idea
 **.idea/
@@ -32,8 +50,13 @@ hs_err_pid*
 *.idea/
 *.idea
 
+target/
+!**/src/main/**/target/
+!**/src/test/**/target/
 **/target/
 **.iml
+*.iws
+*.ipr
 
 # Default ignored files
 /workspace.xml
@@ -54,10 +77,21 @@ hs_err_pid*
 **/.idea/dynamic.xml
 **/.idea/uiDesigner.xml
 
-## File-based project format:
-*.iws
-
 # IntelliJ
 /out/
 **/.jpb/persistence-units.xml
 
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+/hw03-Questionnaire-SpringBootBased/.mvn/

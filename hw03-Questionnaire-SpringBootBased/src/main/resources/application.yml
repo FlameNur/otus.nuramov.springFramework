@@ -1,0 +1,4 @@
+DefaultLocale: ru
+QuestionsSource: sources/Questions.csv
+AnswersSource: sources/Answers.csv
+ValuesToCheckSource: sources/ValuesToCheck.csv
