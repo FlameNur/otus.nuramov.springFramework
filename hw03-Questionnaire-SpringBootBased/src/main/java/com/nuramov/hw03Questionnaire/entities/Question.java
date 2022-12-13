@@ -1,13 +1,10 @@
 package com.nuramov.hw03Questionnaire.entities;
 
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 
 /**
  * Класс Question представляет собой сущность вопроса для опросника с соответствующими полями
  */
-@Service
 public class Question {
 
     private String numberOfQuestion;

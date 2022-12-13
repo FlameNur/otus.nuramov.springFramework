@@ -25,7 +25,7 @@ public class UserAuthorizationImpl implements UserAuthorization{
         // Считываем ответ и проверяем на корректность
         while(true) {
             try {
-                if(nameCheck(reader.readLine())) break;
+                if(isCorrectName(reader.readLine())) break;
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -37,7 +37,7 @@ public class UserAuthorizationImpl implements UserAuthorization{
      * @param name - введенное имя
      * @return - возвращает true, если имя введено корректно, и false, если нет
      */
-    private boolean nameCheck(String name) {
+    private boolean isCorrectName(String name) {
         boolean check = true;
         // Имя должно содержать только латинские буквы
         if(!Pattern.matches("\\b[a-zA-Z]+\\b", name)) {

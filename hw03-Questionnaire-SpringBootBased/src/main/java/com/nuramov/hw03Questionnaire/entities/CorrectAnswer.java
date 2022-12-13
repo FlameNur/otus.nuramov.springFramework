@@ -1,8 +1,8 @@
 package com.nuramov.hw03Questionnaire.entities;
 
-import org.springframework.stereotype.Service;
-
-@Service
+/**
+ * Класс CorrectAnswer представляет собой сущность правильного ответа
+ */
 public class CorrectAnswer {
 
     private String correctAnswerValue;

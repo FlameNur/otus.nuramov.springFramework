@@ -66,7 +66,7 @@ public class QuestionnaireImpl implements Questionnaire {
         for(Answer answer : listOfAnswerOptions) {
             System.out.println();
             messagePrinter.printMessage("Answer");
-            System.out.println(number + " - " + answer.getAnswerValue());
+            System.out.print(number + " - " + answer.getAnswerValue());
             number++;
         }
     }
@@ -100,23 +100,20 @@ public class QuestionnaireImpl implements Questionnaire {
     private String getAnswer(BufferedReader reader, Question question) throws IOException {
         System.out.println();
         String inputValue = "";
-        boolean validationOfInputValue = false;
 
-        while (!validationOfInputValue) {
+        do {
             inputValue = reader.readLine();
-            // Проверяем корректность введенного ответа: true-корректный, false-некорректный
-            validationOfInputValue = checkAnswer(inputValue, question);
-        }
+        } while (!isCorrectAnswer(inputValue, question));
         return inputValue;
     }
 
     /**
-     * Метод checkAnswer позволяет проверить корректность введенного ответа
+     * Метод isCorrectAnswer позволяет проверить корректность введенного ответа
      * @param inputValue - введенный ответ
      * @param question - сущность вопроса
      * @return - возвращает true, если введенный ответ проходит проверку
      */
-    private boolean checkAnswer(String inputValue, Question question) {
+    private boolean isCorrectAnswer(String inputValue, Question question) {
         int amountOfAnswerOptions = question.getAnswers().size();
 
         // Если пустое поле, "id = 0" или "нечисловое значение", то выдаем соответствующее сообщение
