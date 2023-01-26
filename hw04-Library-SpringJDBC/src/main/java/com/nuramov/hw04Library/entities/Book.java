@@ -3,7 +3,7 @@ package com.nuramov.hw04Library.entities;
 public class Book {
 
     private Long id;
-    private String name;
+    private String title;
     private Author author;
     private Genre genre;
 
@@ -15,12 +15,12 @@ public class Book {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Author getAuthor() {
