@@ -4,8 +4,8 @@ public class Book {
 
     private Long id;
     private String name;
-    private String author;
-    private String genre;
+    private Author author;
+    private Genre genre;
 
     public Long getId() {
         return id;
@@ -23,19 +23,19 @@ public class Book {
         this.name = name;
     }
 
-    public String getAuthor() {
+    public Author getAuthor() {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
-    public String getGenre() {
+    public Genre getGenre() {
         return genre;
     }
 
-    public void setGenre(String genre) {
+    public void setGenre(Genre genre) {
         this.genre = genre;
     }
 }

@@ -1,13 +1,22 @@
 package com.nuramov.hw04Library.dao.bookRepository;
 
 import com.nuramov.hw04Library.entities.Book;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
+@Repository
 public class BookRepositoryImpl implements BookRepository{
+
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+
+    @Autowired
+    public BookRepositoryImpl(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
 
     @Override
     public int count() {
