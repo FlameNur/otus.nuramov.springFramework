@@ -17,7 +17,7 @@ public class ApplicationConfiguration {
     private Environment environment;
 
     @Bean
-    public NamedParameterJdbcTemplate jdbcTemplate(DataSource ds) {
+    public NamedParameterJdbcTemplate namedParameterJdbcTemplateBean(DataSource ds) {
         return new NamedParameterJdbcTemplate(ds);
     }
 
