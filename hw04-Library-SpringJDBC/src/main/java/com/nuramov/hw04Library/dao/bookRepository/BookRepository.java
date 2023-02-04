@@ -17,9 +17,5 @@ public interface BookRepository {
 
     List<Book> findAll();
 
-    List<Book> findByName(String name);
-
     Optional<Book> findById(Long id);
-
-    String getNameById(Long id);
 }

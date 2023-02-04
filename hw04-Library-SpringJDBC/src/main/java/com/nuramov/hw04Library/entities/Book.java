@@ -7,6 +7,13 @@ public class Book {
     private Author author;
     private Genre genre;
 
+    public Book(Long id, String title, Author author, Genre genre) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+    }
+
     public Long getId() {
         return id;
     }
@@ -37,5 +44,15 @@ public class Book {
 
     public void setGenre(Genre genre) {
         this.genre = genre;
+    }
+
+    @Override
+    public String toString() {
+        return "Book{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", author=" + author +
+                ", genre=" + genre +
+                '}';
     }
 }
