@@ -66,7 +66,7 @@ public class BookRepositoryImpl implements BookRepository{
     @Override
     public Optional<Book> findById(Long id) {
         return namedParameterJdbcTemplate.queryForObject(
-                "select * from books where id = :id",
+                "select * from BOOKS where id = :id",
                 new MapSqlParameterSource("id", id),
                 (rs, rowNum) ->
                         Optional.of(new Book(
