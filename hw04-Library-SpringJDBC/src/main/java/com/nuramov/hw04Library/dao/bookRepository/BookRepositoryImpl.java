@@ -4,11 +4,14 @@ import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +51,22 @@ public class BookRepositoryImpl implements BookRepository{
                 .update("delete from BOOKS where id = ?", id);
     }
 
+
+    //НАДО ПЕРЕДЕЛАТЬ ПО ПРИМЕРУ НИЖЕ, НО ПОКА УБРАЛ КОНСТРУКТОР ИЗ КЛАССА Book
+
     @Override
+    public List<Book> findAll() {
+        return null;
+    }
+
+    @Override
+    public Optional<Book> findById(Long id) {
+        return Optional.empty();
+    }
+
+
+
+    /*@Override
     public List<Book> findAll() {
         return namedParameterJdbcTemplate.getJdbcOperations()
                 .query(
@@ -56,7 +74,7 @@ public class BookRepositoryImpl implements BookRepository{
                         (rs, rowNum) ->
                                 new Book(
                                         rs.getLong("id"),
-                                        rs.getString("name"),
+                                        rs.getString("title"),
                                         rs.getObject(3, Author.class),
                                         rs.getObject(4, Genre.class)
                                 )
@@ -71,10 +89,21 @@ public class BookRepositoryImpl implements BookRepository{
                 (rs, rowNum) ->
                         Optional.of(new Book(
                                 rs.getLong("id"),
-                                rs.getString("name"),
+                                rs.getString("title"),
                                 rs.getObject(3, Author.class),
                                 rs.getObject(4, Genre.class)
                         ))
         );
+    }*/
+
+    private static class BookRowMapper implements RowMapper<Book> {
+
+        @Override
+        public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Book book = new Book();
+
+
+            return null;
+        }
     }
 }

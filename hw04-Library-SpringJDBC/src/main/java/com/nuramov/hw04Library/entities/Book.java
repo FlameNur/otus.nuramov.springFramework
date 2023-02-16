@@ -7,13 +7,6 @@ public class Book {
     private Author author;
     private Genre genre;
 
-    public Book(Long id, String title, Author author, Genre genre) {
-        this.id = id;
-        this.title = title;
-        this.author = author;
-        this.genre = genre;
-    }
-
     public Long getId() {
         return id;
     }

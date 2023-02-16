@@ -11,6 +11,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @SpringBootApplication
 //@ConfigurationPropertiesScan("com.baeldung.configurationproperties")
 public class ApplicationRunner implements CommandLineRunner {
@@ -35,22 +38,23 @@ public class ApplicationRunner implements CommandLineRunner {
     }
 
     void runJDBC() {
-        //namedParameterJdbcTemplate.getJdbcOperations().execute("DROP TABLE IF EXISTS BOOKS");
 
-        //namedParameterJdbcTemplate.getJdbcOperations().execute("INSERT INTO AUTHOR(FIRSTNAME, lastname) VALUES ('sfs', 'AA')");
-        //namedParameterJdbcTemplate.getJdbcOperations().execute("INSERT INTO GENRE (name) VALUES ('DD')");
-        //namedParameterJdbcTemplate.getJdbcOperations().execute("INSERT INTO BOOKS (title, AUTHOR_lastname, GENRE_name) VALUES ('fssfs', (SELECT lastname FROM AUTHOR WHERE lastname = 'AA'), (SELECT name FROM GENRE WHERE name = 'DD'))");
 
-        //Book book = bookRepository.findById(2L).orElseThrow(IllegalArgumentException::new);
-        //System.out.println(book);
-
-        System.out.println(bookRepository.count());
+        System.out.println("Количество книг в библиотеке: " + bookRepository.count());
 
         Author author = new Author("AA", "BB");
         Genre genre = new Genre("GG");
-        Book book = new Book(1L,"TT", author, genre);
+        Book book = new Book();
+
 
         //bookRepository.save(book);
+
+        List<Book> books = new ArrayList<>();
+        books = bookRepository.findAll();
+
+
+        //Book book2 = bookRepository.findById(1L).get();
+        //System.out.println(book2);
     }
 
 }
