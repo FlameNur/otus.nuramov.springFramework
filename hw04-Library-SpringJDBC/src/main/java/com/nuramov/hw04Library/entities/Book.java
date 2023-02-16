@@ -1,11 +1,13 @@
 package com.nuramov.hw04Library.entities;
 
+import java.util.List;
+
 public class Book {
 
     private Long id;
     private String title;
-    private Author author;
-    private Genre genre;
+    private List<String> authorLastnames;
+    private String genreName;
 
     public Long getId() {
         return id;
@@ -23,20 +25,20 @@ public class Book {
         this.title = title;
     }
 
-    public Author getAuthor() {
-        return author;
+    public List<String> getAuthorLastnames() {
+        return authorLastnames;
     }
 
-    public void setAuthor(Author author) {
-        this.author = author;
+    public void setAuthorLastnames(List<String> authorLastnames) {
+        this.authorLastnames = authorLastnames;
     }
 
-    public Genre getGenre() {
-        return genre;
+    public String getGenreName() {
+        return genreName;
     }
 
-    public void setGenre(Genre genre) {
-        this.genre = genre;
+    public void setGenreName(String genreName) {
+        this.genreName = genreName;
     }
 
     @Override
@@ -44,8 +46,8 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", author=" + author +
-                ", genre=" + genre +
+                ", authorLastnames=" + authorLastnames +
+                ", genreName='" + genreName + '\'' +
                 '}';
     }
 }

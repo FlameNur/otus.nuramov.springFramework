@@ -13,6 +13,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @SpringBootApplication
 //@ConfigurationPropertiesScan("com.baeldung.configurationproperties")
@@ -42,15 +43,19 @@ public class ApplicationRunner implements CommandLineRunner {
 
         System.out.println("Количество книг в библиотеке: " + bookRepository.count());
 
-        Author author = new Author("AA", "BB");
-        Genre genre = new Genre("GG");
+        //Author author = new Author("AA", "BB");
+        //Genre genre = new Genre("GG");
         Book book = new Book();
+
+        Optional<Book> opt = bookRepository.findById(1L);
+        book = opt.get();
+        System.out.println(book);
 
 
         //bookRepository.save(book);
 
         List<Book> books = new ArrayList<>();
-        books = bookRepository.findAll();
+        //books = bookRepository.findAll();
 
 
         //Book book2 = bookRepository.findById(1L).get();
