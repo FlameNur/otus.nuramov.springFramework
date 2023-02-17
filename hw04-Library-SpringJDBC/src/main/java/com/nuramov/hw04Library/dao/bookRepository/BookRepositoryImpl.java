@@ -60,7 +60,7 @@ public class BookRepositoryImpl implements BookRepository{
     // Пробуем
     @Override
     public Optional<Book> findById(Long id) {
-        final HashMap<String, Object> params = new HashMap<>(1);
+        /*final HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
         return Optional.ofNullable(
                 jdbcOperations.queryForObject(
@@ -68,7 +68,8 @@ public class BookRepositoryImpl implements BookRepository{
                         params,
                         new BookRowMapper()
                 )
-        );
+        );*/
+        return Optional.empty();
     }
 
 
@@ -103,7 +104,7 @@ public class BookRepositoryImpl implements BookRepository{
         );
     }*/
 
-    private static class BookRowMapper implements RowMapper<Book> {
+    /*private static class BookRowMapper implements RowMapper<Book> {
 
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -111,13 +112,13 @@ public class BookRepositoryImpl implements BookRepository{
             book.setId(rs.getLong("id"));
             book.setTitle(rs.getString("title"));
 
-            Array arrayOfNames = rs.getArray("authorLastnames");
-            String[] arrayOfNamesStr = (String[])arrayOfNames.getArray();
+            Array arrayOfNames = rs.getArray("AUTHOR_lastname");
+            String[] arrayOfNamesStr = (String[]) arrayOfNames.getArray();
             List<String> authorLastnames = Arrays.asList(arrayOfNamesStr);
             book.setAuthorLastnames(authorLastnames);
 
-            book.setGenreName(rs.getString("genreName"));
+            book.setGenreName(rs.getString("GENRE_name"));
             return book;
         }
-    }
+    }*/
 }

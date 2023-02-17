@@ -5,10 +5,6 @@ public class Genre {
     private Long id;
     private String name;
 
-    public Genre(String name) {
-        this.name = name;
-    }
-
     public Long getId() {
         return id;
     }
@@ -28,7 +24,6 @@ public class Genre {
     @Override
     public String toString() {
         return "Genre{" +
-                "id=" + id +
                 ", name='" + name + '\'' +
                 '}';
     }

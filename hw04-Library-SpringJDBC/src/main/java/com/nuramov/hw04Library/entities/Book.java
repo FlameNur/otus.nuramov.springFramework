@@ -6,8 +6,8 @@ public class Book {
 
     private Long id;
     private String title;
-    private List<String> authorLastnames;
-    private String genreName;
+    private List<Author> authors;
+    private Genre genre;
 
     public Long getId() {
         return id;
@@ -25,20 +25,20 @@ public class Book {
         this.title = title;
     }
 
-    public List<String> getAuthorLastnames() {
-        return authorLastnames;
+    public List<Author> getAuthors() {
+        return authors;
     }
 
-    public void setAuthorLastnames(List<String> authorLastnames) {
-        this.authorLastnames = authorLastnames;
+    public void setAuthors(List<Author> authors) {
+        this.authors = authors;
     }
 
-    public String getGenreName() {
-        return genreName;
+    public Genre getGenre() {
+        return genre;
     }
 
-    public void setGenreName(String genreName) {
-        this.genreName = genreName;
+    public void setGenre(Genre genre) {
+        this.genre = genre;
     }
 
     @Override
@@ -46,8 +46,8 @@ public class Book {
         return "Book{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
-                ", authorLastnames=" + authorLastnames +
-                ", genreName='" + genreName + '\'' +
+                ", authors=" + authors.toString() +
+                ", genre=" + genre.getName() +
                 '}';
     }
 }

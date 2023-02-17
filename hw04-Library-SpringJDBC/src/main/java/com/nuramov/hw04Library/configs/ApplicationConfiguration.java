@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
@@ -17,7 +18,7 @@ public class ApplicationConfiguration {
     private Environment environment;
 
     @Bean
-    public NamedParameterJdbcTemplate namedParameterJdbcTemplateBean(DataSource ds) {
+    public NamedParameterJdbcOperations namedParameterJdbcOperationsBean(DataSource ds) {
         return new NamedParameterJdbcTemplate(ds);
     }
 
@@ -30,6 +31,4 @@ public class ApplicationConfiguration {
         dataSource.setPassword(environment.getProperty("spring.datasource.password"));
         return dataSource;
     }
-
-
 }

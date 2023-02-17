@@ -19,8 +19,8 @@ import java.util.Optional;
 //@ConfigurationPropertiesScan("com.baeldung.configurationproperties")
 public class ApplicationRunner implements CommandLineRunner {
 
-    @Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    /*@Autowired
+    NamedParameterJdbcTemplate namedParameterJdbcTemplate;*/
 
     @Autowired
     BookRepository bookRepository;
@@ -29,6 +29,7 @@ public class ApplicationRunner implements CommandLineRunner {
         //ConfigurableApplicationContext context = SpringApplication.run(ApplicationRunner.class, args);
         //QuestionnaireLauncher questionnaireLauncher = context.getBean(QuestionnaireLauncher.class);
         //questionnaireLauncher.run();
+
         SpringApplication.run(ApplicationRunner.class, args);
 
     }
@@ -39,22 +40,46 @@ public class ApplicationRunner implements CommandLineRunner {
     }
 
     void runJDBC() {
+        // Создали книгу
+        Author author1 = new Author();
+        author1.setId(10L);
+        author1.setFirstName("FirstName1");
+        author1.setLastName("LastName1");
+
+        Author author2 = new Author();
+        author2.setId(11L);
+        author2.setFirstName("FirstName2");
+        author2.setLastName("LastName2");
+
+        List<Author> authors = new ArrayList<>();
+        authors.add(author1);
+        authors.add(author2);
+
+        Genre genre1 = new Genre();
+        genre1.setId(10L);
+        genre1.setName("genre1");
+
+        Book book1 = new Book();
+        book1.setId(10L);
+        book1.setTitle("Title1");
+        book1.setGenre(genre1);
+        book1.setAuthors(authors);
+
+        System.out.println(book1);
 
 
+        // Отрабатываем работу с БД
         System.out.println("Количество книг в библиотеке: " + bookRepository.count());
 
-        //Author author = new Author("AA", "BB");
-        //Genre genre = new Genre("GG");
-        Book book = new Book();
 
-        Optional<Book> opt = bookRepository.findById(1L);
+        /*Optional<Book> opt = bookRepository.findById(1L);
         book = opt.get();
-        System.out.println(book);
+        System.out.println(book);*/
 
 
         //bookRepository.save(book);
 
-        List<Book> books = new ArrayList<>();
+        //List<Book> books = new ArrayList<>();
         //books = bookRepository.findAll();
 
 
