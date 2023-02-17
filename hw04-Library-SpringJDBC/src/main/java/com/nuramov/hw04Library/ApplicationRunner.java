@@ -72,9 +72,9 @@ public class ApplicationRunner implements CommandLineRunner {
         System.out.println("Количество книг в библиотеке: " + bookRepository.count());
 
 
-        /*Optional<Book> opt = bookRepository.findById(1L);
-        book = opt.get();
-        System.out.println(book);*/
+        Optional<Book> opt = bookRepository.findById(1L);
+        Book book4 = opt.get();
+        System.out.println(book4);
 
 
         //bookRepository.save(book);
