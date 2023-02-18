@@ -3,8 +3,7 @@ package com.nuramov.hw04Library.entities;
 public class Author {
 
     private Long id;
-    private String firstName;
-    private String lastName;
+    private String name;
 
     public Long getId() {
         return id;
@@ -14,27 +13,18 @@ public class Author {
         this.id = id;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
     public String toString() {
         return "Author{" +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
+                "name='" + name + '\'' +
                 '}';
     }
 }

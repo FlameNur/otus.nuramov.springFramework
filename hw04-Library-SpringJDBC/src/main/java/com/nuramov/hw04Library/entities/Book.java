@@ -47,7 +47,7 @@ public class Book {
                 "id=" + id +
                 ", title='" + title + '\'' +
                 ", authors=" + authors.toString() +
-                ", genre=" + genre.getName() +
+                ", genre=" + genre.toString() +
                 '}';
     }
 }

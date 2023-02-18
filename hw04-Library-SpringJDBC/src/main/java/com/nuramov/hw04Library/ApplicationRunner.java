@@ -43,13 +43,11 @@ public class ApplicationRunner implements CommandLineRunner {
         // Создали книгу
         Author author1 = new Author();
         author1.setId(10L);
-        author1.setFirstName("FirstName1");
-        author1.setLastName("LastName1");
+        author1.setName("authorName10");
 
         Author author2 = new Author();
         author2.setId(11L);
-        author2.setFirstName("FirstName2");
-        author2.setLastName("LastName2");
+        author2.setName("authorName11");
 
         List<Author> authors = new ArrayList<>();
         authors.add(author1);
@@ -57,11 +55,11 @@ public class ApplicationRunner implements CommandLineRunner {
 
         Genre genre1 = new Genre();
         genre1.setId(10L);
-        genre1.setName("genre1");
+        genre1.setName("genre10");
 
         Book book1 = new Book();
         book1.setId(10L);
-        book1.setTitle("Title1");
+        book1.setTitle("Title10");
         book1.setGenre(genre1);
         book1.setAuthors(authors);
 
