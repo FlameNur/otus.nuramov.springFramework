@@ -31,14 +31,4 @@ public class ApplicationConfiguration {
         dataSource.setPassword(environment.getProperty("spring.datasource.password"));
         return dataSource;
     }
-
-    /*@Bean
-    public DataSource datasource() {
-        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setUrl("jdbc:h2:mem:Library");
-        dataSource.setDriverClassName("org.h2.Driver");
-        dataSource.setUsername("sa");
-        dataSource.setPassword("password");
-        return dataSource;
-    }*/
 }

@@ -32,10 +32,15 @@ public class BookRepositoryImpl implements BookRepository{
     //Надо переделать
     @Override
     public int save(Book book) {
-        /*return jdbcOperations.getJdbcOperations()
-                .update("insert into BOOKS (title, AUTHOR_lastname, GENRE_name) values(?,?,?)",
-                        book.getTitle(), book.getAuthor(), book.getGenre());*/
-        return 0;
+        final HashMap<String, Object> params = new HashMap<>(3);
+        //params.put("id", book.getId());
+        params.put("title", book.getTitle());
+        params.put("GENRE_id", book.getGenre().getId());
+        params.put("AUTHOR_id", book.getAuthor().getId());
+        return jdbcOperations.update(
+                "INSERT INTO BOOKS (title, GENRE_id, AUTHOR_id) VALUES (:title, :GENRE_id, :AUTHOR_id)",
+                params
+        );
     }
 
     @Override
@@ -57,7 +62,6 @@ public class BookRepositoryImpl implements BookRepository{
         return null;
     }
 
-    // Пробуем
     @Override
     public Optional<Book> findById(Long id) {
         final HashMap<String, Object> params = new HashMap<>(1);
@@ -69,7 +73,6 @@ public class BookRepositoryImpl implements BookRepository{
                         new BookRowMapper(jdbcOperations)
                 )
         );
-        //return Optional.empty();
     }
 
 
@@ -88,20 +91,6 @@ public class BookRepositoryImpl implements BookRepository{
                                 )
                 );
     }
-
-    @Override
-    public Optional<Book> findById(Long id) {
-        return namedParameterJdbcTemplate.queryForObject(
-                "select * from BOOKS where id = :id",
-                new MapSqlParameterSource("id", id),
-                (rs, rowNum) ->
-                        Optional.of(new Book(
-                                rs.getLong("id"),
-                                rs.getString("title"),
-                                rs.getObject(3, Author.class),
-                                rs.getObject(4, Genre.class)
-                        ))
-        );
     }*/
 
     private static class BookRowMapper implements RowMapper<Book> {
@@ -119,19 +108,23 @@ public class BookRepositoryImpl implements BookRepository{
             book.setTitle(rs.getString("title"));
 
             long genreId = rs.getLong("GENRE_id");
-            long authorId = rs.getLong("AUTHOR_id");
-
-            Genre genre = jdbcOperations.getJdbcOperations().queryForObject(
-                    "SELECT * FROM GENRE WHERE ID = " + genreId,
-                    Genre.class
+            String genreName = jdbcOperations.getJdbcOperations().queryForObject(
+                    "SELECT NAME FROM GENRE WHERE ID = " + genreId,
+                    String.class
             );
-
-            Author author = jdbcOperations.getJdbcOperations().queryForObject(
-                    "SELECT * FROM AUTHOR WHERE ID = " + authorId,
-                    Author.class
-            );
-
+            Genre genre = new Genre();
+            genre.setId(genreId);
+            genre.setName(genreName);
             book.setGenre(genre);
+
+            long authorId = rs.getLong("AUTHOR_id");
+            String authorName = jdbcOperations.getJdbcOperations().queryForObject(
+                    "SELECT NAME FROM AUTHOR WHERE ID = " + authorId,
+                    String.class
+            );
+            Author author = new Author();
+            author.setId(authorId);
+            author.setName(authorName);
             book.setAuthor(author);
             return book;
         }
