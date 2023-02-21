@@ -1,13 +1,14 @@
 package com.nuramov.hw04Library.dao.bookRepository;
 
+import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
+import com.nuramov.hw04Library.entities.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
@@ -39,9 +40,10 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int update(Book book) {
-        return jdbcOperations.update(
+        /*return jdbcOperations.update(
                 "update BOOKS set title = :title, AUTHOR_lastname = :author, GENRE_name =: genre where id = :id",
-                new BeanPropertySqlParameterSource(book));
+                new BeanPropertySqlParameterSource(book));*/
+        return 0;
     }
 
     @Override
@@ -50,8 +52,6 @@ public class BookRepositoryImpl implements BookRepository{
                 .update("delete from BOOKS where id = ?", id);
     }
 
-
-    //НАДО ПЕРЕДЕЛАТЬ ПО ПРИМЕРУ НИЖЕ, НО ПОКА УБРАЛ КОНСТРУКТОР ИЗ КЛАССА Book
     @Override
     public List<Book> findAll() {
         return null;
@@ -60,16 +60,16 @@ public class BookRepositoryImpl implements BookRepository{
     // Пробуем
     @Override
     public Optional<Book> findById(Long id) {
-        /*final HashMap<String, Object> params = new HashMap<>(1);
+        final HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
         return Optional.ofNullable(
                 jdbcOperations.queryForObject(
                         "select * from books where id = :id",
                         params,
-                        new BookRowMapper()
+                        new BookRowMapper(jdbcOperations)
                 )
-        );*/
-        return Optional.empty();
+        );
+        //return Optional.empty();
     }
 
 
@@ -104,7 +104,13 @@ public class BookRepositoryImpl implements BookRepository{
         );
     }*/
 
-    /*private static class BookRowMapper implements RowMapper<Book> {
+    private static class BookRowMapper implements RowMapper<Book> {
+
+        private final NamedParameterJdbcOperations jdbcOperations;
+
+        private BookRowMapper(NamedParameterJdbcOperations jdbcOperations) {
+            this.jdbcOperations = jdbcOperations;
+        }
 
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
@@ -112,13 +118,22 @@ public class BookRepositoryImpl implements BookRepository{
             book.setId(rs.getLong("id"));
             book.setTitle(rs.getString("title"));
 
-            Array arrayOfNames = rs.getArray("AUTHOR_lastname");
-            String[] arrayOfNamesStr = (String[]) arrayOfNames.getArray();
-            List<String> authorLastnames = Arrays.asList(arrayOfNamesStr);
-            book.setAuthorLastnames(authorLastnames);
+            long genreId = rs.getLong("GENRE_id");
+            long authorId = rs.getLong("AUTHOR_id");
 
-            book.setGenreName(rs.getString("GENRE_name"));
+            Genre genre = jdbcOperations.getJdbcOperations().queryForObject(
+                    "SELECT * FROM GENRE WHERE ID = " + genreId,
+                    Genre.class
+            );
+
+            Author author = jdbcOperations.getJdbcOperations().queryForObject(
+                    "SELECT * FROM AUTHOR WHERE ID = " + authorId,
+                    Author.class
+            );
+
+            book.setGenre(genre);
+            book.setAuthor(author);
             return book;
         }
-    }*/
+    }
 }

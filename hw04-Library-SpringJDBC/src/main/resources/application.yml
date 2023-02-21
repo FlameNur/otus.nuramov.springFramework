@@ -2,14 +2,15 @@ spring:
   datasource:
     # Использовал OLD_INFORMATION_SCHEMA=TRUE (чтобы подключиться к БД, иначе ошибка со ссылкой к таблице CATALOGS)
     # вместо DB_CLOSE_DELAY=-1 (сохраняет содержимое базы данных в памяти, пока виртуальная машина работает)
-    url: jdbc:h2:mem:test;OLD_INFORMATION_SCHEMA=TRUE
+    url: jdbc:h2:mem:Library
     username: user
     password: password
     driverClassName: org.h2.Driver
   h2:
     console:
       enabled: true
-
-  sql:
-    init:
-      mode=always:
+  jpa:
+    database-platform=org:
+      hibernate:
+        dialect:
+          H2Dialect:

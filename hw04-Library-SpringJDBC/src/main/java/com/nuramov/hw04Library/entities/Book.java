@@ -6,7 +6,7 @@ public class Book {
 
     private Long id;
     private String title;
-    private List<Author> authors;
+    private Author author;
     private Genre genre;
 
     public Long getId() {
@@ -25,12 +25,12 @@ public class Book {
         this.title = title;
     }
 
-    public List<Author> getAuthors() {
-        return authors;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setAuthors(List<Author> authors) {
-        this.authors = authors;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 
     public Genre getGenre() {
@@ -44,10 +44,9 @@ public class Book {
     @Override
     public String toString() {
         return "Book{" +
-                "id=" + id +
                 ", title='" + title + '\'' +
-                ", authors=" + authors.toString() +
-                ", genre=" + genre.toString() +
+                ", author=" + author.getName() +
+                ", genre=" + genre.getName() +
                 '}';
     }
 }

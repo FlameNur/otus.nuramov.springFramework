@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
@@ -41,7 +42,7 @@ public class ApplicationRunner implements CommandLineRunner {
 
     void runJDBC() {
         // Создали книгу
-        Author author1 = new Author();
+        /*Author author1 = new Author();
         author1.setId(10L);
         author1.setName("authorName10");
 
@@ -63,16 +64,16 @@ public class ApplicationRunner implements CommandLineRunner {
         book1.setGenre(genre1);
         book1.setAuthors(authors);
 
-        System.out.println(book1);
+        System.out.println(book1);*/
 
 
         // Отрабатываем работу с БД
         System.out.println("Количество книг в библиотеке: " + bookRepository.count());
 
 
-        Optional<Book> opt = bookRepository.findById(1L);
+        /*Optional<Book> opt = bookRepository.findById(1L);
         Book book4 = opt.get();
-        System.out.println(book4);
+        System.out.println(book4);*/
 
 
         //bookRepository.save(book);
