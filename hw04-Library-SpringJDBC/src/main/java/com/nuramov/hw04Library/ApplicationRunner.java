@@ -59,10 +59,13 @@ public class ApplicationRunner implements CommandLineRunner {
         genre4.setName("genreName4");
 
         Book book4 = new Book();
+        book4.setId(4L);
         book4.setTitle("bookTitle4");
         book4.setAuthor(author4);
         book4.setGenre(genre4);
         System.out.println(book4);
+
+        System.out.println(book4.getGenre().getId());
 
         int saveCheck = bookRepository.save(book4);
         System.out.println(saveCheck);

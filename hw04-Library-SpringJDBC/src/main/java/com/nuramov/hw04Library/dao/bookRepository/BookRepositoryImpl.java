@@ -32,15 +32,17 @@ public class BookRepositoryImpl implements BookRepository{
     //Надо переделать
     @Override
     public int save(Book book) {
-        final HashMap<String, Object> params = new HashMap<>(3);
-        //params.put("id", book.getId());
+        /*final HashMap<String, Object> params = new HashMap<>(4);
+        params.put("id", book.getId());
         params.put("title", book.getTitle());
         params.put("GENRE_id", book.getGenre().getId());
         params.put("AUTHOR_id", book.getAuthor().getId());
         return jdbcOperations.update(
-                "INSERT INTO BOOKS (title, GENRE_id, AUTHOR_id) VALUES (:title, :GENRE_id, :AUTHOR_id)",
+                "INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (:id, :title, :GENRE_id, :AUTHOR_id)",
                 params
-        );
+        );*/
+        return jdbcOperations.getJdbcOperations().update("INSERT INTO BOOKS (title, GENRE_id, AUTHOR_id) VALUES (?, ?, ?)",
+                book.getTitle(), book.getGenre().getId(), book.getAuthor().getId());
     }
 
     @Override
