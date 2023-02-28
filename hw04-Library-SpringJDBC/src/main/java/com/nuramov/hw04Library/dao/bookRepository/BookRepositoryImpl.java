@@ -41,8 +41,8 @@ public class BookRepositoryImpl implements BookRepository{
                 "INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (:id, :title, :GENRE_id, :AUTHOR_id)",
                 params
         );*/
-        return jdbcOperations.getJdbcOperations().update("INSERT INTO BOOKS (title, GENRE_id, AUTHOR_id) VALUES (?, ?, ?)",
-                book.getTitle(), book.getGenre().getId(), book.getAuthor().getId());
+        return jdbcOperations.getJdbcOperations().update("INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (?, ?, ?, ?)",
+                book.getId(), book.getTitle(), book.getGenre().getId(), book.getAuthor().getId());
     }
 
     @Override

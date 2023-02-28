@@ -10,6 +10,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
 import java.util.ArrayList;
@@ -20,8 +22,8 @@ import java.util.Optional;
 //@ConfigurationPropertiesScan("com.baeldung.configurationproperties")
 public class ApplicationRunner implements CommandLineRunner {
 
-    /*@Autowired
-    NamedParameterJdbcTemplate namedParameterJdbcTemplate;*/
+    @Autowired
+    NamedParameterJdbcOperations jdbcOperations;
 
     @Autowired
     BookRepository bookRepository;
@@ -65,14 +67,22 @@ public class ApplicationRunner implements CommandLineRunner {
         book4.setGenre(genre4);
         System.out.println(book4);
 
-        System.out.println(book4.getGenre().getId());
+        System.out.println("Genre 4 id: " + book4.getGenre().getId());
 
-        int saveCheck = bookRepository.save(book4);
-        System.out.println(saveCheck);
+        /*jdbcOperations.getJdbcOperations().update("INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (?, ?, ?, ?)",
+                book4.getId(), book4.getTitle(), book4.getGenre().getId(), book4.getAuthor().getId());*/
 
-        Optional<Book> optionalBookCheck = bookRepository.findById(4L);
+
+        /*int saveCheck = bookRepository.save(book4);
+        System.out.println(saveCheck);*/
+
+        /*int deleteCheck = bookRepository.deleteById(1L);
+        System.out.println(deleteCheck);
+        System.out.println("Количество книг в библиотеке после удаления: " + bookRepository.count());*/
+
+        /*Optional<Book> optionalBookCheck = bookRepository.findById(4L);
         Book bookCheck = optionalBookCheck.get();
-        System.out.println(bookCheck);
+        System.out.println(bookCheck);*/
 
         //List<Book> books = new ArrayList<>();
         //books = bookRepository.findAll();
