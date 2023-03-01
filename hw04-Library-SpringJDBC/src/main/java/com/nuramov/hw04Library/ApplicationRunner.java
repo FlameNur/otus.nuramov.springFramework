@@ -8,18 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.context.ConfigurableApplicationContext;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
-import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
-//@ConfigurationPropertiesScan("com.baeldung.configurationproperties")
 public class ApplicationRunner implements CommandLineRunner {
 
     @Autowired
@@ -29,10 +23,6 @@ public class ApplicationRunner implements CommandLineRunner {
     BookRepository bookRepository;
 
     public static void main(String[] args) {
-        //ConfigurableApplicationContext context = SpringApplication.run(ApplicationRunner.class, args);
-        //QuestionnaireLauncher questionnaireLauncher = context.getBean(QuestionnaireLauncher.class);
-        //questionnaireLauncher.run();
-
         SpringApplication.run(ApplicationRunner.class, args);
 
     }

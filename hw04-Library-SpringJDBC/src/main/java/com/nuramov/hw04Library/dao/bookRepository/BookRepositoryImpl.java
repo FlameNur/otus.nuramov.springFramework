@@ -5,7 +5,6 @@ import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
@@ -28,7 +27,7 @@ public class BookRepositoryImpl implements BookRepository{
     @Override
     public int count() {
         return jdbcOperations.getJdbcOperations()
-                .queryForObject("select count(*) from BOOKS", Integer.class);
+                .queryForObject("SELECT count(*) FROM BOOKS", Integer.class);
     }
 
     //Надо переделать
@@ -60,25 +59,34 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int update(Book book) {
-        // Добавить для всех таблиц!!!!!!!!!!!!!!!!!!!
+        // Обновляем Genre
+        SqlParameterSource genreNamedParameters = new MapSqlParameterSource()
+                .addValue("id", book.getGenre().getId())
+                .addValue("name", book.getGenre().getName());
+        jdbcOperations.update("UPDATE GENRE SET name = :name WHERE id = :id", genreNamedParameters);
 
+        // Обновляем Author
+        SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
+                .addValue("id", book.getAuthor().getId())
+                .addValue("name", book.getAuthor().getName());
+        jdbcOperations.update("UPDATE AUTHOR SET name = :name WHERE id = :id", genreNamedParameters);
 
-        SqlParameterSource namedParameters = new MapSqlParameterSource()
+        // Обновляем Books
+        SqlParameterSource bookNamedParameters = new MapSqlParameterSource()
                 .addValue("id", book.getId())
                 .addValue("title", book.getTitle())
                 .addValue("GENRE_id", book.getGenre().getId())
                 .addValue("AUTHOR_id", book.getAuthor().getId());
-        int status = jdbcOperations.update(
-                "UPDATE BOOKS set title = :title, GENRE_id = :GENRE_id, AUTHOR_id = :AUTHOR_id where id = :id",
-                namedParameters
+        return jdbcOperations.update(
+                "UPDATE BOOKS SET title = :title, GENRE_id = :GENRE_id, AUTHOR_id = :AUTHOR_id WHERE id = :id",
+                bookNamedParameters
         );
-        return status;
     }
 
     @Override
     public int deleteById(Long id) {
         return jdbcOperations.getJdbcOperations()
-                .update("delete from BOOKS where id = ?", id);
+                .update("DELETE FROM BOOKS WHERE id = ?", id);
     }
 
     @Override
@@ -95,7 +103,7 @@ public class BookRepositoryImpl implements BookRepository{
         params.put("id", id);
         return Optional.ofNullable(
                 jdbcOperations.queryForObject(
-                        "select * from books where id = :id",
+                        "SELECT * FROM BOOKS WHERE id = :id",
                         params,
                         new BookRowMapper(jdbcOperations)
                 )
@@ -118,7 +126,7 @@ public class BookRepositoryImpl implements BookRepository{
 
             long genreId = rs.getLong("GENRE_id");
             String genreName = jdbcOperations.getJdbcOperations().queryForObject(
-                    "SELECT NAME FROM GENRE WHERE ID = " + genreId,
+                    "SELECT name FROM GENRE WHERE id = " + genreId,
                     String.class
             );
             Genre genre = new Genre();
@@ -128,7 +136,7 @@ public class BookRepositoryImpl implements BookRepository{
 
             long authorId = rs.getLong("AUTHOR_id");
             String authorName = jdbcOperations.getJdbcOperations().queryForObject(
-                    "SELECT NAME FROM AUTHOR WHERE ID = " + authorId,
+                    "SELECT name FROM AUTHOR WHERE id = " + authorId,
                     String.class
             );
             Author author = new Author();

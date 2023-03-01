@@ -1,4 +1,4 @@
-/*Для корректной работы надо создать DDL*/
+/*Для корректной работы необходимо создать DDL*/
 /*Добавили 1-ю книгу*/
 INSERT INTO AUTHOR (id, name) VALUES (default, 'authorName1');
 INSERT INTO GENRE (id, name) VALUES (default, 'genreName1');
