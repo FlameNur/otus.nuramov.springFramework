@@ -69,27 +69,40 @@ public class ApplicationRunner implements CommandLineRunner {
 
         System.out.println("Genre 4 id: " + book4.getGenre().getId());
 
-        /*jdbcOperations.getJdbcOperations().update("INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (?, ?, ?, ?)",
-                book4.getId(), book4.getTitle(), book4.getGenre().getId(), book4.getAuthor().getId());*/
+
+        int deleteCheck = bookRepository.deleteById(1L);
+        System.out.println("Проверка удаления " + deleteCheck);
+        System.out.println("Количество книг в библиотеке после удаления: " + bookRepository.count());
 
 
-        /*int saveCheck = bookRepository.save(book4);
-        System.out.println(saveCheck);*/
+        // Проверяем update
+        Optional<Book> optionalBook2 = bookRepository.findById(2L);
+        Book book2 = optionalBook2.get();
+        System.out.println("До обновления: " + book2);
 
-        /*int deleteCheck = bookRepository.deleteById(1L);
-        System.out.println(deleteCheck);
-        System.out.println("Количество книг в библиотеке после удаления: " + bookRepository.count());*/
+        book2.setTitle("bookName2AAAA");
+        // Нашел косяк__________________________________________________________________________!!!!!!!!!!!!!
+        book2.getGenre().setName("genreName2AAA");
+        int updateCheck = bookRepository.update(book2);
+        System.out.println("Проверка обновления " + updateCheck);
 
-        /*Optional<Book> optionalBookCheck = bookRepository.findById(4L);
-        Book bookCheck = optionalBookCheck.get();
-        System.out.println(bookCheck);*/
+        Optional<Book> optionalBookUpdateCheck = bookRepository.findById(2L);
+        book2 = optionalBookUpdateCheck.get();
+        System.out.println("После обновления: " + book2);
 
-        //List<Book> books = new ArrayList<>();
-        //books = bookRepository.findAll();
+        // Сохраняем
+        int saveCheck = bookRepository.save(book4);
+        System.out.println("Проверка после сохранения " + saveCheck);
+        System.out.println("Количество книг в библиотеке: " + bookRepository.count());
 
+        Optional<Book> optionalBookSaveCheck = bookRepository.findById(4L);
+        Book savedBook = optionalBookSaveCheck.get();
+        System.out.println("После сохранения: " + savedBook);
 
-        //Book book2 = bookRepository.findById(1L).get();
-        //System.out.println(book2);
+        // Все книги
+        List<Book> allBooks = bookRepository.findAll();
+        for(Book book : allBooks) {
+            System.out.println(book);
+        }
     }
-
 }

@@ -6,7 +6,9 @@ import com.nuramov.hw04Library.entities.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.stereotype.Repository;
 
 import java.sql.ResultSet;
@@ -32,25 +34,45 @@ public class BookRepositoryImpl implements BookRepository{
     //Надо переделать
     @Override
     public int save(Book book) {
-        /*final HashMap<String, Object> params = new HashMap<>(4);
-        params.put("id", book.getId());
-        params.put("title", book.getTitle());
-        params.put("GENRE_id", book.getGenre().getId());
-        params.put("AUTHOR_id", book.getAuthor().getId());
+        // Сохраняем в Genre
+        final HashMap<String, Object> genreParams = new HashMap<>(2);
+        genreParams.put("id", book.getGenre().getId());
+        genreParams.put("name", book.getGenre().getName());
+        jdbcOperations.update("INSERT INTO GENRE (id, name) VALUES (:id, :name)", genreParams);
+
+        // Сохраняем в Author
+        final HashMap<String, Object> authorParams = new HashMap<>(2);
+        authorParams.put("id", book.getAuthor().getId());
+        authorParams.put("name", book.getAuthor().getName());
+        jdbcOperations.update("INSERT INTO AUTHOR (id, name) VALUES (:id, :name)", authorParams);
+
+        // Сохраняем в Books
+        final HashMap<String, Object> bookParams = new HashMap<>(4);
+        bookParams.put("id", book.getId());
+        bookParams.put("title", book.getTitle());
+        bookParams.put("GENRE_id", book.getGenre().getId());
+        bookParams.put("AUTHOR_id", book.getAuthor().getId());
         return jdbcOperations.update(
                 "INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (:id, :title, :GENRE_id, :AUTHOR_id)",
-                params
-        );*/
-        return jdbcOperations.getJdbcOperations().update("INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (?, ?, ?, ?)",
-                book.getId(), book.getTitle(), book.getGenre().getId(), book.getAuthor().getId());
+                bookParams
+        );
     }
 
     @Override
     public int update(Book book) {
-        /*return jdbcOperations.update(
-                "update BOOKS set title = :title, AUTHOR_lastname = :author, GENRE_name =: genre where id = :id",
-                new BeanPropertySqlParameterSource(book));*/
-        return 0;
+        // Добавить для всех таблиц!!!!!!!!!!!!!!!!!!!
+
+
+        SqlParameterSource namedParameters = new MapSqlParameterSource()
+                .addValue("id", book.getId())
+                .addValue("title", book.getTitle())
+                .addValue("GENRE_id", book.getGenre().getId())
+                .addValue("AUTHOR_id", book.getAuthor().getId());
+        int status = jdbcOperations.update(
+                "UPDATE BOOKS set title = :title, GENRE_id = :GENRE_id, AUTHOR_id = :AUTHOR_id where id = :id",
+                namedParameters
+        );
+        return status;
     }
 
     @Override
@@ -61,7 +83,10 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public List<Book> findAll() {
-        return null;
+        return jdbcOperations.query(
+                "SELECT * FROM BOOKS",
+                new BookRowMapper(jdbcOperations)
+        );
     }
 
     @Override
@@ -76,24 +101,6 @@ public class BookRepositoryImpl implements BookRepository{
                 )
         );
     }
-
-
-
-    /*@Override
-    public List<Book> findAll() {
-        return namedParameterJdbcTemplate.getJdbcOperations()
-                .query(
-                        "select * from BOOKS",
-                        (rs, rowNum) ->
-                                new Book(
-                                        rs.getLong("id"),
-                                        rs.getString("title"),
-                                        rs.getObject(3, Author.class),
-                                        rs.getObject(4, Genre.class)
-                                )
-                );
-    }
-    }*/
 
     private static class BookRowMapper implements RowMapper<Book> {
 
