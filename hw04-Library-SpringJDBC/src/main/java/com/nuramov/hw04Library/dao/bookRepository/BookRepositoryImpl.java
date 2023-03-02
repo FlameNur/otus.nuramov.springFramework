@@ -26,8 +26,11 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int count() {
-        return jdbcOperations.getJdbcOperations()
+        Integer count = jdbcOperations.getJdbcOperations()
                 .queryForObject("SELECT count(*) FROM BOOKS", Integer.class);
+
+        if (count != null) return count;
+        else return 0;
     }
 
     //Надо переделать
