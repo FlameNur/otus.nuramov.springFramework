@@ -11,6 +11,11 @@
 
     <artifactId>hw04-Library-SpringJDBC</artifactId>
 
+    <!--Пока оставлю это, не понятно как будет работать с тестами-->
+    <!--<properties>
+        <tests.skip>true</tests.skip>
+    </properties>-->
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -22,6 +27,11 @@
             <artifactId>h2</artifactId>
             <version>2.1.214</version>
             <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.shell</groupId>
+            <artifactId>spring-shell-starter</artifactId>
+            <version>3.0.1</version>
         </dependency>
     </dependencies>
 

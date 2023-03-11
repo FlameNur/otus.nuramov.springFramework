@@ -27,6 +27,7 @@ public class ApplicationRunner implements CommandLineRunner {
 
     }
 
+    // ВСЕ ЭТО НЕ РАБОТАЕТ ЧЕРЕЗ SPRING SHELL. НУЖНО СДЕЛАТЬ ТЕСТЫ
     @Override
     public void run(String... args) {
         runJDBC();
