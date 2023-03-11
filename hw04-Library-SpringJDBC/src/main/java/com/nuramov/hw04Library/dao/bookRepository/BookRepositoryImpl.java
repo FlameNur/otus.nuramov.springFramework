@@ -33,20 +33,25 @@ public class BookRepositoryImpl implements BookRepository{
         else return 0;
     }
 
-    //Надо переделать
     @Override
     public int save(Book book) {
         // Сохраняем в Genre
         final HashMap<String, Object> genreParams = new HashMap<>(2);
         genreParams.put("id", book.getGenre().getId());
         genreParams.put("name", book.getGenre().getName());
-        jdbcOperations.update("INSERT INTO GENRE (id, name) VALUES (:id, :name)", genreParams);
+        jdbcOperations.update(
+                "INSERT INTO GENRE (id, name) VALUES (:id, :name)",
+                genreParams
+        );
 
         // Сохраняем в Author
         final HashMap<String, Object> authorParams = new HashMap<>(2);
         authorParams.put("id", book.getAuthor().getId());
         authorParams.put("name", book.getAuthor().getName());
-        jdbcOperations.update("INSERT INTO AUTHOR (id, name) VALUES (:id, :name)", authorParams);
+        jdbcOperations.update(
+                "INSERT INTO AUTHOR (id, name) VALUES (:id, :name)",
+                authorParams
+        );
 
         // Сохраняем в Books
         final HashMap<String, Object> bookParams = new HashMap<>(4);
@@ -66,13 +71,19 @@ public class BookRepositoryImpl implements BookRepository{
         SqlParameterSource genreNamedParameters = new MapSqlParameterSource()
                 .addValue("id", book.getGenre().getId())
                 .addValue("name", book.getGenre().getName());
-        jdbcOperations.update("UPDATE GENRE SET name = :name WHERE id = :id", genreNamedParameters);
+        jdbcOperations.update(
+                "UPDATE GENRE SET name = :name WHERE id = :id",
+                genreNamedParameters
+        );
 
         // Обновляем Author
         SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
                 .addValue("id", book.getAuthor().getId())
                 .addValue("name", book.getAuthor().getName());
-        jdbcOperations.update("UPDATE AUTHOR SET name = :name WHERE id = :id", genreNamedParameters);
+        jdbcOperations.update(
+                "UPDATE AUTHOR SET name = :name WHERE id = :id",
+                authorNamedParameters
+        );
 
         // Обновляем Books
         SqlParameterSource bookNamedParameters = new MapSqlParameterSource()
@@ -113,6 +124,9 @@ public class BookRepositoryImpl implements BookRepository{
         );
     }
 
+    /**
+     * Класс BookRowMapper позволяет получить значения полей экземпляра класса Book из БД через ResultSet
+     */
     private static class BookRowMapper implements RowMapper<Book> {
 
         private final NamedParameterJdbcOperations jdbcOperations;

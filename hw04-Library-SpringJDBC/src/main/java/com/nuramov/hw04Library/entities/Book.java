@@ -1,7 +1,5 @@
 package com.nuramov.hw04Library.entities;
 
-import java.util.List;
-
 public class Book {
 
     private Long id;

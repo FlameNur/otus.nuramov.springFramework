@@ -1,7 +1,5 @@
 spring:
   datasource:
-    # Использовал OLD_INFORMATION_SCHEMA=TRUE (чтобы подключиться к БД, иначе ошибка со ссылкой к таблице CATALOGS)
-    # вместо DB_CLOSE_DELAY=-1 (сохраняет содержимое базы данных в памяти, пока виртуальная машина работает)
     url: jdbc:h2:mem:Library;DB_CLOSE_DELAY=-1
     username: user
     password: password

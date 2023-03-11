@@ -10,10 +10,13 @@ import org.springframework.shell.standard.ShellMethod;
 
 import java.util.List;
 
+/**
+ * Класс LibraryShellCommands позволяет работать с основными командами CRUD-приложения через консоль
+ */
 @ShellComponent
 public class LibraryShellCommands {
 
-    private BookRepository bookRepository;
+    private final BookRepository bookRepository;
 
     @Autowired
     public LibraryShellCommands(BookRepository bookRepository) {
@@ -53,6 +56,42 @@ public class LibraryShellCommands {
                          long authorId, String authorName,
                          long genreId, String genreName
     ) {
+        Book book = getNewParametersOfBook(
+                bookId, bookName, authorId, authorName, genreId, genreName
+        );
+
+        bookRepository.save(book);
+        System.out.println(book + " успешно сохранен в БД");
+    }
+
+    @ShellMethod (key = "update", value = "Update the book in database")
+    public void updateBook(long bookId, String bookName,
+                           long authorId, String authorName,
+                           long genreId, String genreName
+    ) {
+        Book book = getNewParametersOfBook(
+                bookId, bookName, authorId, authorName, genreId, genreName
+        );
+
+        bookRepository.update(book);
+        System.out.println(book + " успешно обновлен в БД");
+    }
+
+    /**
+     * Метод getNewParametersOfBook позволяет получить экземпляр класса Book
+     * с новыми характеристиками по заданным значениям параметров
+     * @param bookId - id книги
+     * @param bookName - название книги
+     * @param authorId - id автора
+     * @param authorName - имя автора
+     * @param genreId - id жанра
+     * @param genreName - название жанра
+     * @return - возвращает экземпляр класса Book с новыми характеристиками
+     */
+    private Book getNewParametersOfBook (long bookId, String bookName,
+                                   long authorId, String authorName,
+                                   long genreId, String genreName
+    ) {
         Author author = new Author();
         author.setId(authorId);
         author.setName(authorName);
@@ -66,13 +105,6 @@ public class LibraryShellCommands {
         book.setTitle(bookName);
         book.setAuthor(author);
         book.setGenre(genre);
-
-        bookRepository.save(book);
-        System.out.println(book + " успешно сохранен в БД");
-    }
-
-    @ShellMethod (key = "update", value = "Update the book in database")
-    public void updateBook() {
-
+        return book;
     }
 }
