@@ -4,6 +4,7 @@ import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -115,13 +116,17 @@ public class BookRepositoryImpl implements BookRepository{
     public Optional<Book> findById(Long id) {
         final HashMap<String, Object> params = new HashMap<>(1);
         params.put("id", id);
-        return Optional.ofNullable(
-                jdbcOperations.queryForObject(
-                        "SELECT * FROM BOOKS WHERE id = :id",
-                        params,
-                        new BookRowMapper(jdbcOperations)
-                )
-        );
+        try {
+            return Optional.ofNullable(
+                    jdbcOperations.queryForObject(
+                            "SELECT * FROM BOOKS WHERE id = :id",
+                            params,
+                            new BookRowMapper(jdbcOperations)
+                    )
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return Optional.empty();
+        }
     }
 
     /**
@@ -138,6 +143,12 @@ public class BookRepositoryImpl implements BookRepository{
         @Override
         public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
             Book book = new Book();
+
+
+            if(rs.wasNull()) return null;
+
+
+
             book.setId(rs.getLong("id"));
             book.setTitle(rs.getString("title"));
 
