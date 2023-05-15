@@ -3,87 +3,66 @@ package com.nuramov.hw04Library.dao.bookRepository;
 import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.JdbcTest;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
+import org.springframework.test.context.jdbc.Sql;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 import static org.junit.jupiter.api.Assertions.*;
 
-@ExtendWith(MockitoExtension.class)
+@JdbcTest
+//@Sql({"/data.sql", "/schema.sql"})
 public class BookRepositoryTest {
 
-    private static final long ID = 1L;
+    @Autowired
+    private NamedParameterJdbcOperations jdbcOperations;
 
-    @Mock
-    BookRepository bookRepository;
+    private BookRepository bookRepository;
+
+    @BeforeEach
+    void setUpBookRepository () {
+        bookRepository = new BookRepositoryImpl(jdbcOperations);
+    }
 
     @Test
-    public void findByIdTest() {
-        /*final Book book = mock(Book.class);
-        //final Book book = getBook();
-        when(book.getId()).thenReturn(ID);
+    void CountTest() {
+        assertEquals(3, bookRepository.count());
+    }
 
-        bookRepository.save(book);
+    @Test
+    void SaveTest() {
+        Book savedBook = getBook();
 
+        bookRepository.save(savedBook);
 
-        when(bookRepository.findById(ID)).thenReturn(Optional.of(book));  //????
-
-
-        Optional<Book> optionalBook = bookRepository.findById(ID);
-        Book actualBook = null;
+        Book bookFromDataBase = null;
+        Optional<Book> optionalBook = bookRepository.findById(10L);
         if(optionalBook.isPresent()) {
-            actualBook = optionalBook.get();
+            bookFromDataBase = optionalBook.get();
         }
 
-
-        assertNotNull(actualBook);
-        assertEquals(book, actualBook);*/
-
-
-        //when(bookRepository.findById(ID)).thenReturn(Optional.of(book));
-    }
-
-
-
-
-
-
-    @Test
-    public void bookRepositoryCountTest() {
-
-    }
-
-    private List<Book> getListOfBooks() {
-        List<Book> listOfBooks = new ArrayList<>();
-
-
-
-        return listOfBooks;
+        assertNotNull(bookFromDataBase);
+        assertEquals(savedBook, bookFromDataBase);
     }
 
     private Book getBook() {
         Genre genre = new Genre();
-        genre.setId(1L);
-        genre.setName("genreName");
+        genre.setId(10L);
+        genre.setName("genreNameTest");
 
         Author author = new Author();
-        author.setId(1L);
-        author.setName("authorName");
+        author.setId(10L);
+        author.setName("authorNameTest");
 
         Book book = new Book();
-        book.setId(1L);
-        book.setTitle("bookTitle");
+        book.setId(10L);
+        book.setTitle("bookTitleTest");
         book.setGenre(genre);
         book.setAuthor(author);
-
         return book;
     }
-
 }
