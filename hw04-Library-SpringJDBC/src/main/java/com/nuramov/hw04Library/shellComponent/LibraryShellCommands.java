@@ -1,9 +1,9 @@
 package com.nuramov.hw04Library.shellComponent;
 
-import com.nuramov.hw04Library.dao.bookRepository.BookRepository;
-import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
-import com.nuramov.hw04Library.entities.Genre;
+import com.nuramov.hw04Library.exceptions.BookDeleteException;
+import com.nuramov.hw04Library.exceptions.BookSaveException;
+import com.nuramov.hw04Library.exceptions.BookUpdateException;
 import com.nuramov.hw04Library.exceptions.FindByIdException;
 import com.nuramov.hw04Library.service.BookRepositoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +11,18 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Класс LibraryShellCommands позволяет работать с основными командами CRUD-приложения через консоль
  */
+
+/** !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * 1. Переделать save, чтобы сохранять с имеющимися жанром и автором, а также с новыми
+ * 2. Также и для update
+ * 3. Решить вопрос с генерацией id при создании книги, автора или жанра в БД
+ */
+
+
 @ShellComponent
 public class LibraryShellCommands {
 
@@ -43,11 +50,11 @@ public class LibraryShellCommands {
 
     @ShellMethod(key = "delete", value = "Delete a book in the database by id.")
     public void deleteById(long id) {
-        int result = bookRepositoryService.deleteById(id);
-        if(result > 0) {
-            System.out.println("Книга удалена из БД");
-        } else {
-            System.out.println("Книга не удалена. Проверьте id и повторите еще раз");
+        try {
+            bookRepositoryService.deleteById(id);
+            System.out.println("Книга успешно удалена");
+        } catch (BookDeleteException e) {
+            System.out.println(e.getLocalizedMessage());
         }
     }
 
@@ -68,11 +75,11 @@ public class LibraryShellCommands {
                 bookId, bookName, authorId, authorName, genreId, genreName
         );
 
-        int result = bookRepositoryService.save(book);
-        if(result > 0) {
+        try {
+            bookRepositoryService.save(book);
             System.out.println(book + " успешно сохранен в БД");
-        } else {
-            System.out.println("Книга не сохранена. Проверьте данные и повторите еще раз");
+        } catch (BookSaveException e) {
+            System.out.println(e.getLocalizedMessage());
         }
     }
 
@@ -85,11 +92,11 @@ public class LibraryShellCommands {
                 bookId, bookName, authorId, authorName, genreId, genreName
         );
 
-        int result = bookRepositoryService.update(book);
-        if(result > 0) {
-            System.out.println(book + " успешно обновлен в БД");
-        } else {
-            System.out.println("Книга не обновлена. Проверьте данные и повторите еще раз");
+        try {
+            bookRepositoryService.update(book);
+            System.out.println("Книга успешно обновлена");
+        } catch (BookUpdateException e) {
+            System.out.println(e.getLocalizedMessage());
         }
     }
 }

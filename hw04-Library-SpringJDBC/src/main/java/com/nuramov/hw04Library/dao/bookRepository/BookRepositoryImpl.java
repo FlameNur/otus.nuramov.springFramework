@@ -3,8 +3,8 @@ package com.nuramov.hw04Library.dao.bookRepository;
 import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
+import com.nuramov.hw04Library.exceptions.BookUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
@@ -68,23 +68,31 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int update(Book book) {
+        // Проверяем наличие книги в БД
+        Optional<Book> optionalBook = findById(book.getId());
+        if(optionalBook.isEmpty()) {
+            return 0;
+        }
+
         // Обновляем Genre
         SqlParameterSource genreNamedParameters = new MapSqlParameterSource()
                 .addValue("id", book.getGenre().getId())
                 .addValue("name", book.getGenre().getName());
-        jdbcOperations.update(
+        int genreUpdateResult = jdbcOperations.update(
                 "UPDATE GENRE SET name = :name WHERE id = :id",
                 genreNamedParameters
         );
+        if(genreUpdateResult == 0) return 0;
 
         // Обновляем Author
         SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
                 .addValue("id", book.getAuthor().getId())
                 .addValue("name", book.getAuthor().getName());
-        jdbcOperations.update(
+        int authorUpdateResult = jdbcOperations.update(
                 "UPDATE AUTHOR SET name = :name WHERE id = :id",
                 authorNamedParameters
         );
+        if(authorUpdateResult == 0) return 0;
 
         // Обновляем Books
         SqlParameterSource bookNamedParameters = new MapSqlParameterSource()

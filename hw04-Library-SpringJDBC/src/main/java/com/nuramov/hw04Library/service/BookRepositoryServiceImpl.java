@@ -4,6 +4,9 @@ import com.nuramov.hw04Library.dao.bookRepository.BookRepository;
 import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
+import com.nuramov.hw04Library.exceptions.BookDeleteException;
+import com.nuramov.hw04Library.exceptions.BookSaveException;
+import com.nuramov.hw04Library.exceptions.BookUpdateException;
 import com.nuramov.hw04Library.exceptions.FindByIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,18 +30,21 @@ public class BookRepositoryServiceImpl implements BookRepositoryService{
     }
 
     @Override
-    public int save(Book book) {
-        return bookRepository.save(book);
+    public void save(Book book) throws BookSaveException {
+        int saveResult = bookRepository.save(book);
+        if(saveResult == 0) throw new BookSaveException();
     }
 
     @Override
-    public int update(Book book) {
-        return bookRepository.update(book);
+    public void update(Book book) throws BookUpdateException {
+        int updateResult = bookRepository.update(book);
+        if(updateResult == 0) throw new BookUpdateException();
     }
 
     @Override
-    public int deleteById(Long id) {
-        return bookRepository.deleteById(id);
+    public void deleteById(Long id) throws BookDeleteException {
+        int deleteResult = bookRepository.deleteById(id);
+        if(deleteResult == 0) throw new BookDeleteException();
     }
 
     @Override

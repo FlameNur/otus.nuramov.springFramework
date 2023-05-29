@@ -1,6 +1,9 @@
 package com.nuramov.hw04Library.service;
 
 import com.nuramov.hw04Library.entities.Book;
+import com.nuramov.hw04Library.exceptions.BookDeleteException;
+import com.nuramov.hw04Library.exceptions.BookSaveException;
+import com.nuramov.hw04Library.exceptions.BookUpdateException;
 import com.nuramov.hw04Library.exceptions.FindByIdException;
 
 import java.util.List;
@@ -10,11 +13,11 @@ public interface BookRepositoryService {
 
     int count();
 
-    int save(Book book);
+    void save(Book book) throws BookSaveException;
 
-    int update(Book book);
+    void update(Book book) throws BookUpdateException;
 
-    int deleteById(Long id);
+    void deleteById(Long id) throws BookDeleteException;
 
     List<Book> findAll();
 
