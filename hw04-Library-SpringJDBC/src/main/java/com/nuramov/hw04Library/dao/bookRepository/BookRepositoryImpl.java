@@ -3,7 +3,6 @@ package com.nuramov.hw04Library.dao.bookRepository;
 import com.nuramov.hw04Library.entities.Author;
 import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.entities.Genre;
-import com.nuramov.hw04Library.exceptions.BookUpdateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -36,23 +35,16 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int save(Book book) {
+        // Проверяем наличие книги в БД
+        Optional<Book> optionalBook = findById(book.getId());
+        if(optionalBook.isPresent()) {
+            return 0;
+        }
         // Сохраняем в Genre
-        final HashMap<String, Object> genreParams = new HashMap<>(2);
-        genreParams.put("id", book.getGenre().getId());
-        genreParams.put("name", book.getGenre().getName());
-        jdbcOperations.update(
-                "INSERT INTO GENRE (id, name) VALUES (:id, :name)",
-                genreParams
-        );
+        genreSaveOrUpdate(book);
 
         // Сохраняем в Author
-        final HashMap<String, Object> authorParams = new HashMap<>(2);
-        authorParams.put("id", book.getAuthor().getId());
-        authorParams.put("name", book.getAuthor().getName());
-        jdbcOperations.update(
-                "INSERT INTO AUTHOR (id, name) VALUES (:id, :name)",
-                authorParams
-        );
+        authorSaveOrUpdate(book);
 
         // Сохраняем в Books
         final HashMap<String, Object> bookParams = new HashMap<>(4);
@@ -73,26 +65,11 @@ public class BookRepositoryImpl implements BookRepository{
         if(optionalBook.isEmpty()) {
             return 0;
         }
-
         // Обновляем Genre
-        SqlParameterSource genreNamedParameters = new MapSqlParameterSource()
-                .addValue("id", book.getGenre().getId())
-                .addValue("name", book.getGenre().getName());
-        int genreUpdateResult = jdbcOperations.update(
-                "UPDATE GENRE SET name = :name WHERE id = :id",
-                genreNamedParameters
-        );
-        if(genreUpdateResult == 0) return 0;
+        genreSaveOrUpdate(book);
 
         // Обновляем Author
-        SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
-                .addValue("id", book.getAuthor().getId())
-                .addValue("name", book.getAuthor().getName());
-        int authorUpdateResult = jdbcOperations.update(
-                "UPDATE AUTHOR SET name = :name WHERE id = :id",
-                authorNamedParameters
-        );
-        if(authorUpdateResult == 0) return 0;
+        authorSaveOrUpdate(book);
 
         // Обновляем Books
         SqlParameterSource bookNamedParameters = new MapSqlParameterSource()
@@ -134,6 +111,62 @@ public class BookRepositoryImpl implements BookRepository{
             );
         } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    private void genreSaveOrUpdate(Book book) {
+        // Проверяем наличие genre в БД
+        Integer genreCount = jdbcOperations.getJdbcOperations().queryForObject(
+                "SELECT count(*) FROM GENRE WHERE id = " + book.getGenre().getId(),
+                Integer.class
+        );
+
+        if(genreCount == 0) {
+            // Сохраняем в Genre
+            final HashMap<String, Object> genreParams = new HashMap<>(2);
+            genreParams.put("id", book.getGenre().getId());
+            genreParams.put("name", book.getGenre().getName());
+            jdbcOperations.update(
+                    "INSERT INTO GENRE (id, name) VALUES (:id, :name)",
+                    genreParams
+            );
+        } else {
+            // Обновляем Genre
+            SqlParameterSource genreNamedParameters = new MapSqlParameterSource()
+                    .addValue("id", book.getGenre().getId())
+                    .addValue("name", book.getGenre().getName());
+            jdbcOperations.update(
+                    "UPDATE GENRE SET name = :name WHERE id = :id",
+                    genreNamedParameters
+            );
+        }
+    }
+
+    private void authorSaveOrUpdate(Book book) {
+        // Проверяем наличие author в БД
+        Integer authorCount = jdbcOperations.getJdbcOperations().queryForObject(
+                "SELECT count(*) FROM AUTHOR WHERE id = " + book.getAuthor().getId(),
+                Integer.class
+        );
+
+        if(authorCount == 0) {
+            // Сохраняем в Author
+            final HashMap<String, Object> authorParams = new HashMap<>(2);
+            authorParams.put("id", book.getAuthor().getId());
+            authorParams.put("name", book.getAuthor().getName());
+            jdbcOperations.update(
+                    "INSERT INTO AUTHOR (id, name) VALUES (:id, :name)",
+                    authorParams
+            );
+        } else {
+            // Обновляем Author
+            SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
+                    .addValue("id", book.getAuthor().getId())
+                    .addValue("name", book.getAuthor().getName());
+            jdbcOperations.update(
+                    "UPDATE AUTHOR SET name = :name WHERE id = :id",
+                    authorNamedParameters
+            );
         }
     }
 
