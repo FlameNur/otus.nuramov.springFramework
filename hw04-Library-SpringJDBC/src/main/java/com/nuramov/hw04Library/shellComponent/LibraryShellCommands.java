@@ -4,8 +4,7 @@ import com.nuramov.hw04Library.entities.Book;
 import com.nuramov.hw04Library.exceptions.BookDeleteException;
 import com.nuramov.hw04Library.exceptions.BookSaveException;
 import com.nuramov.hw04Library.exceptions.BookUpdateException;
-import com.nuramov.hw04Library.exceptions.FindByIdException;
-import com.nuramov.hw04Library.service.BookRepositoryService;
+import com.nuramov.hw04Library.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
@@ -18,32 +17,27 @@ import java.util.List;
 @ShellComponent
 public class LibraryShellCommands {
 
-    private final BookRepositoryService bookRepositoryService;
+    private final BookService bookService;
 
     @Autowired
-    public LibraryShellCommands(BookRepositoryService bookRepositoryService) {
-        this.bookRepositoryService = bookRepositoryService;
+    public LibraryShellCommands(BookService bookService) {
+        this.bookService = bookService;
     }
 
     @ShellMethod(key = "count", value = "Show count of books in database.")
     public void booksCount() {
-        System.out.println("Количество книг в БД: " + bookRepositoryService.count());
+        System.out.println("Количество книг в БД: " + bookService.count());
     }
 
     @ShellMethod(key = "findById", value = "Find a book in the database by id.")
     public Book findBookById(long id) {
-        try {
-            return bookRepositoryService.findById(id).get();
-        } catch (FindByIdException e) {
-            System.out.println(e.getLocalizedMessage());
-            return null;
-        }
+        return bookService.findById(id);
     }
 
     @ShellMethod(key = "delete", value = "Delete a book in the database by id.")
     public void deleteById(long id) {
         try {
-            bookRepositoryService.deleteById(id);
+            bookService.deleteById(id);
             System.out.println("Книга успешно удалена");
         } catch (BookDeleteException e) {
             System.out.println(e.getLocalizedMessage());
@@ -52,24 +46,20 @@ public class LibraryShellCommands {
 
     @ShellMethod(key = "findAll", value = "Find all books in database.")
     public void findAllBooks() {
-        List<Book> allBooks = bookRepositoryService.findAll();
+        List<Book> allBooks = bookService.findAll();
         for(Book book : allBooks) {
             System.out.println(book);
         }
     }
 
     @ShellMethod (key = "save", value = "Save a book in database.")
-    public void saveBook(long bookId, String bookName,
+    public void saveBook(String bookName,
                          long authorId, String authorName,
                          long genreId, String genreName
     ) {
-        Book book = bookRepositoryService.getNewParametersOfBook(
-                bookId, bookName, authorId, authorName, genreId, genreName
-        );
-
         try {
-            bookRepositoryService.save(book);
-            System.out.println(book + " успешно сохранен в БД");
+            bookService.save(bookName, authorId, authorName, genreId, genreName);
+            System.out.println("книга успешно сохранена в БД");
         } catch (BookSaveException e) {
             System.out.println(e.getLocalizedMessage());
         }
@@ -80,12 +70,8 @@ public class LibraryShellCommands {
                            long authorId, String authorName,
                            long genreId, String genreName
     ) {
-        Book book = bookRepositoryService.getNewParametersOfBook(
-                bookId, bookName, authorId, authorName, genreId, genreName
-        );
-
         try {
-            bookRepositoryService.update(book);
+            bookService.update(bookId, bookName, authorId, authorName, genreId, genreName);
             System.out.println("Книга успешно обновлена");
         } catch (BookUpdateException e) {
             System.out.println(e.getLocalizedMessage());

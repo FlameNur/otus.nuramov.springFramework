@@ -7,7 +7,6 @@ import com.nuramov.hw04Library.entities.Genre;
 import com.nuramov.hw04Library.exceptions.BookDeleteException;
 import com.nuramov.hw04Library.exceptions.BookSaveException;
 import com.nuramov.hw04Library.exceptions.BookUpdateException;
-import com.nuramov.hw04Library.exceptions.FindByIdException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,12 +14,12 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class BookRepositoryServiceImpl implements BookRepositoryService{
+public class BookServiceImpl implements BookService {
 
     private final BookRepository bookRepository;
 
     @Autowired
-    public BookRepositoryServiceImpl(BookRepository bookRepository) {
+    public BookServiceImpl(BookRepository bookRepository) {
         this.bookRepository = bookRepository;
     }
 
@@ -30,13 +29,30 @@ public class BookRepositoryServiceImpl implements BookRepositoryService{
     }
 
     @Override
-    public void save(Book book) throws BookSaveException {
-        int saveResult = bookRepository.save(book);
-        if(saveResult == 0) throw new BookSaveException();
+    public void save(String bookName,
+                     long authorId, String authorName,
+                     long genreId, String genreName
+    ) throws BookSaveException {
+        // Проверяем наличие книги в БД
+        //Optional<Book> optionalBook = bookRepository.findById(bookId());  // Надо переделать
+        //if(optionalBook.isPresent()) throw new BookSaveException();
+
+        //int saveResult = bookRepository.save(book);
+        //if(saveResult == 0) throw new BookSaveException();
     }
 
     @Override
-    public void update(Book book) throws BookUpdateException {
+    public void update(long bookId, String bookName,
+                       long authorId, String authorName,
+                       long genreId, String genreName
+    ) throws BookUpdateException {
+
+        // Проверяем наличие книги в БД
+        Optional<Book> optionalBook = bookRepository.findById(bookId);
+        if(optionalBook.isEmpty()) throw new BookUpdateException();
+
+        Book book = getNewParametersOfBook(bookId, bookName, authorId, authorName, genreId, genreName);
+
         int updateResult = bookRepository.update(book);
         if(updateResult == 0) throw new BookUpdateException();
     }
@@ -53,17 +69,11 @@ public class BookRepositoryServiceImpl implements BookRepositoryService{
     }
 
     @Override
-    public Optional<Book> findById(Long id) throws FindByIdException {
-        Optional<Book> optionalBook = bookRepository.findById(id);
-        if(optionalBook.isPresent()) {
-            return optionalBook;
-        } else {
-            throw new FindByIdException();
-        }
+    public Book findById(Long id) {
+        return bookRepository.findById(id).orElse(null);
     }
 
-    @Override
-    public Book getNewParametersOfBook (long bookId, String bookName,
+    private Book getNewParametersOfBook (long bookId, String bookName,
                                          long authorId, String authorName,
                                          long genreId, String genreName
     ) {

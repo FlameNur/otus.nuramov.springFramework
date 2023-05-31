@@ -35,14 +35,8 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int save(Book book) {
-        // Проверяем наличие книги в БД
-        Optional<Book> optionalBook = findById(book.getId());
-        if(optionalBook.isPresent()) {
-            return 0;
-        }
         // Сохраняем в Genre
         genreSaveOrUpdate(book);
-
         // Сохраняем в Author
         authorSaveOrUpdate(book);
 
@@ -60,14 +54,8 @@ public class BookRepositoryImpl implements BookRepository{
 
     @Override
     public int update(Book book) {
-        // Проверяем наличие книги в БД
-        Optional<Book> optionalBook = findById(book.getId());
-        if(optionalBook.isEmpty()) {
-            return 0;
-        }
         // Обновляем Genre
         genreSaveOrUpdate(book);
-
         // Обновляем Author
         authorSaveOrUpdate(book);
 

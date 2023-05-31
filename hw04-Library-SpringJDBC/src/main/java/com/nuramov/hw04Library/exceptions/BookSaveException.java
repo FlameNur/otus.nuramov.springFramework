@@ -1,6 +1,6 @@
 package com.nuramov.hw04Library.exceptions;
 
-public class BookSaveException extends Exception {
+public class BookSaveException extends RuntimeException {
 
     @Override
     public String getLocalizedMessage() {

@@ -1,6 +1,6 @@
 package com.nuramov.hw04Library.exceptions;
 
-public class BookDeleteException extends Exception {
+public class BookDeleteException extends RuntimeException {
 
     @Override
     public String getLocalizedMessage() {
