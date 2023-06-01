@@ -11,12 +11,12 @@ public interface BookService {
 
     int count();
 
-    void save(String bookName,
+    void save(String bookTitle,
               long authorId, String authorName,
               long genreId, String genreName
     ) throws BookSaveException;
 
-    void update(long bookId, String bookName,
+    void update(long bookId, String bookTitle,
                 long authorId, String authorName,
                 long genreId, String genreName
     ) throws BookUpdateException;

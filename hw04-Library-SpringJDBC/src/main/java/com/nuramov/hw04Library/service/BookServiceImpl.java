@@ -29,29 +29,24 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void save(String bookName,
+    public void save(String bookTitle,
                      long authorId, String authorName,
                      long genreId, String genreName
     ) throws BookSaveException {
-        // Проверяем наличие книги в БД
-        //Optional<Book> optionalBook = bookRepository.findById(bookId());  // Надо переделать
-        //if(optionalBook.isPresent()) throw new BookSaveException();
-
-        //int saveResult = bookRepository.save(book);
-        //if(saveResult == 0) throw new BookSaveException();
+        int saveResult = bookRepository.save(bookTitle, authorId, authorName, genreId, genreName);
+        if(saveResult == 0) throw new BookSaveException();
     }
 
     @Override
-    public void update(long bookId, String bookName,
+    public void update(long bookId, String bookTitle,
                        long authorId, String authorName,
                        long genreId, String genreName
     ) throws BookUpdateException {
-
         // Проверяем наличие книги в БД
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if(optionalBook.isEmpty()) throw new BookUpdateException();
 
-        Book book = getNewParametersOfBook(bookId, bookName, authorId, authorName, genreId, genreName);
+        Book book = getNewParametersOfBook(bookId, bookTitle, authorId, authorName, genreId, genreName);
 
         int updateResult = bookRepository.update(book);
         if(updateResult == 0) throw new BookUpdateException();
@@ -73,7 +68,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
-    private Book getNewParametersOfBook (long bookId, String bookName,
+    private Book getNewParametersOfBook (long bookId, String bookTitle,
                                          long authorId, String authorName,
                                          long genreId, String genreName
     ) {
@@ -87,7 +82,7 @@ public class BookServiceImpl implements BookService {
 
         Book book = new Book();
         book.setId(bookId);
-        book.setTitle(bookName);
+        book.setTitle(bookTitle);
         book.setAuthor(author);
         book.setGenre(genre);
         return book;

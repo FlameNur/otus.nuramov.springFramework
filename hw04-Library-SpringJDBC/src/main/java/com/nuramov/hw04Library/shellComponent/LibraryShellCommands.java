@@ -53,12 +53,12 @@ public class LibraryShellCommands {
     }
 
     @ShellMethod (key = "save", value = "Save a book in database.")
-    public void saveBook(String bookName,
+    public void saveBook(String bookTitle,
                          long authorId, String authorName,
                          long genreId, String genreName
     ) {
         try {
-            bookService.save(bookName, authorId, authorName, genreId, genreName);
+            bookService.save(bookTitle, authorId, authorName, genreId, genreName);
             System.out.println("книга успешно сохранена в БД");
         } catch (BookSaveException e) {
             System.out.println(e.getLocalizedMessage());
@@ -66,12 +66,12 @@ public class LibraryShellCommands {
     }
 
     @ShellMethod (key = "update", value = "Update the book in database")
-    public void updateBook(long bookId, String bookName,
+    public void updateBook(long bookId, String bookTitle,
                            long authorId, String authorName,
                            long genreId, String genreName
     ) {
         try {
-            bookService.update(bookId, bookName, authorId, authorName, genreId, genreName);
+            bookService.update(bookId, bookTitle, authorId, authorName, genreId, genreName);
             System.out.println("Книга успешно обновлена");
         } catch (BookUpdateException e) {
             System.out.println(e.getLocalizedMessage());

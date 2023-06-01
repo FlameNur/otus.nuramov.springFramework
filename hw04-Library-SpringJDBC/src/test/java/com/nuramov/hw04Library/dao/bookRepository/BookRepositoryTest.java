@@ -17,8 +17,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @JdbcTest
 public class BookRepositoryTest {
 
-    private final Long ID = 10L;
-
     @Autowired
     private NamedParameterJdbcOperations jdbcOperations;
 
@@ -38,9 +36,16 @@ public class BookRepositoryTest {
     void saveTest() {
         Book newBook = getBook();
 
-        bookRepository.save(newBook);
+        // bookId = 4L, authorId = 3L, genreId = 3L при сохранении в БД
+        bookRepository.save(newBook.getTitle(),
+                newBook.getAuthor().getId(), newBook.getAuthor().getName(),
+                newBook.getGenre().getId(), newBook.getGenre().getName());
 
-        Book bookFromDataBase = getBookFromDataBase(ID);
+        Book bookFromDataBase = getBookFromDataBase(4L);
+
+        newBook.setId(4L);
+        newBook.getAuthor().setId(3L);
+        newBook.getGenre().setId(3L);
 
         assertNotNull(bookFromDataBase);
         assertEquals(newBook, bookFromDataBase);
@@ -49,21 +54,18 @@ public class BookRepositoryTest {
 
     @Test
     void updateTest() {
-        Book newBook = getBook();
+        Book book = getBookFromDataBase(3L);
 
-        bookRepository.save(newBook);
+        book.setTitle("newUpdatedTitle");
+        book.setAuthor(getNewAuthorName());
+        book.setGenre(getNewGenreName());
 
-        newBook.setTitle("newUpdatedTitle");
-        newBook.setAuthor(getNewAuthorName());
-        newBook.setGenre(getNewGenreName());
+        bookRepository.update(book);
 
-        bookRepository.update(newBook);
+        Book updatedBook = getBookFromDataBase(3L);
 
-        Book bookFromDataBase = getBookFromDataBase(ID);
-
-        assertNotNull(bookFromDataBase);
-        assertEquals(newBook, bookFromDataBase);
-        assertEquals(4, bookRepository.count());
+        assertNotNull(updatedBook);
+        assertEquals(book, updatedBook);
     }
 
     @Test
@@ -103,16 +105,18 @@ public class BookRepositoryTest {
     }
 
     private Book getBook() {
+        Long id = 10L;
+
         Genre genre = new Genre();
-        genre.setId(ID);
+        genre.setId(id);
         genre.setName("genreNameTest");
 
         Author author = new Author();
-        author.setId(ID);
+        author.setId(id);
         author.setName("authorNameTest");
 
         Book book = new Book();
-        book.setId(ID);
+        book.setId(id);
         book.setTitle("bookTitleTest");
         book.setGenre(genre);
         book.setAuthor(author);
@@ -130,14 +134,14 @@ public class BookRepositoryTest {
 
     private Author getNewAuthorName() {
         Author author = new Author();
-        author.setId(ID);
+        author.setId(4L);
         author.setName("newAuthorNameTest");
         return author;
     }
 
     private Genre getNewGenreName() {
         Genre genre = new Genre();
-        genre.setId(ID);
+        genre.setId(4L);
         genre.setName("newGenreNameTest");
         return genre;
     }
