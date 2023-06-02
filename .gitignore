@@ -95,3 +95,6 @@ build/
 .vscode/
 
 /hw03-Questionnaire-SpringBootBased/.mvn/
+
+# Spring Shell
+!/spring-shell.log
