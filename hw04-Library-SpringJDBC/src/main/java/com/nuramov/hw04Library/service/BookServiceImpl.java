@@ -33,7 +33,6 @@ public class BookServiceImpl implements BookService {
                      long authorId, String authorName,
                      long genreId, String genreName
     ) {
-        // bookId = 0, т.к. он не передается и не сохраняется
         Book book = getNewParametersOfBook(bookTitle, authorId, authorName, genreId, genreName);
 
         int saveResult = bookRepository.save(book);

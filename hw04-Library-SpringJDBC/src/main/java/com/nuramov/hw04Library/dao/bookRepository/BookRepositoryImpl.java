@@ -175,21 +175,21 @@ public class BookRepositoryImpl implements BookRepository{
         );
     }
 
-    private Long getAuthorIdFromDB(String authorName) {
-        SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
-                .addValue("name", authorName);
-        return jdbcOperations.queryForObject(
-                "SELECT id FROM AUTHOR WHERE name = :name",
-                authorNamedParameters, Long.class
-        );
-    }
-
     private Long getGenreIdFromDB(String genreName) {
         SqlParameterSource genreNamedParameters = new MapSqlParameterSource()
                 .addValue("name", genreName);
         return jdbcOperations.queryForObject(
                 "SELECT id FROM GENRE WHERE name = :name",
                 genreNamedParameters, Long.class
+        );
+    }
+
+    private Long getAuthorIdFromDB(String authorName) {
+        SqlParameterSource authorNamedParameters = new MapSqlParameterSource()
+                .addValue("name", authorName);
+        return jdbcOperations.queryForObject(
+                "SELECT id FROM AUTHOR WHERE name = :name",
+                authorNamedParameters, Long.class
         );
     }
 
