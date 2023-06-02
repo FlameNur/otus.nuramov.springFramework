@@ -37,9 +37,7 @@ public class BookRepositoryTest {
         Book newBook = getBook();
 
         // bookId = 4L, authorId = 3L, genreId = 3L при сохранении в БД
-        bookRepository.save(newBook.getTitle(),
-                newBook.getAuthor().getId(), newBook.getAuthor().getName(),
-                newBook.getGenre().getId(), newBook.getGenre().getName());
+        bookRepository.save(newBook);
 
         Book bookFromDataBase = getBookFromDataBase(4L);
 
@@ -55,6 +53,7 @@ public class BookRepositoryTest {
     @Test
     void updateTest() {
         Book book = getBookFromDataBase(3L);
+        assertNotNull(book);
 
         book.setTitle("newUpdatedTitle");
         book.setAuthor(getNewAuthorName());

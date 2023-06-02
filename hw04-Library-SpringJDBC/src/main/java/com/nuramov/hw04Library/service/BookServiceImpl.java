@@ -32,8 +32,11 @@ public class BookServiceImpl implements BookService {
     public void save(String bookTitle,
                      long authorId, String authorName,
                      long genreId, String genreName
-    ) throws BookSaveException {
-        int saveResult = bookRepository.save(bookTitle, authorId, authorName, genreId, genreName);
+    ) {
+        // bookId = 0, т.к. он не передается и не сохраняется
+        Book book = getNewParametersOfBook(bookTitle, authorId, authorName, genreId, genreName);
+
+        int saveResult = bookRepository.save(book);
         if(saveResult == 0) throw new BookSaveException();
     }
 
@@ -41,19 +44,19 @@ public class BookServiceImpl implements BookService {
     public void update(long bookId, String bookTitle,
                        long authorId, String authorName,
                        long genreId, String genreName
-    ) throws BookUpdateException {
+    ) {
         // Проверяем наличие книги в БД
         Optional<Book> optionalBook = bookRepository.findById(bookId);
         if(optionalBook.isEmpty()) throw new BookUpdateException();
 
-        Book book = getNewParametersOfBook(bookId, bookTitle, authorId, authorName, genreId, genreName);
+        setNewParametersOfBook(optionalBook.get(), bookTitle, authorId, authorName, genreId, genreName);
 
-        int updateResult = bookRepository.update(book);
+        int updateResult = bookRepository.update(optionalBook.get());
         if(updateResult == 0) throw new BookUpdateException();
     }
 
     @Override
-    public void deleteById(Long id) throws BookDeleteException {
+    public void deleteById(Long id) {
         int deleteResult = bookRepository.deleteById(id);
         if(deleteResult == 0) throw new BookDeleteException();
     }
@@ -68,7 +71,7 @@ public class BookServiceImpl implements BookService {
         return bookRepository.findById(id).orElse(null);
     }
 
-    private Book getNewParametersOfBook (long bookId, String bookTitle,
+    private Book getNewParametersOfBook (String bookTitle,
                                          long authorId, String authorName,
                                          long genreId, String genreName
     ) {
@@ -81,10 +84,20 @@ public class BookServiceImpl implements BookService {
         genre.setName(genreName);
 
         Book book = new Book();
-        book.setId(bookId);
         book.setTitle(bookTitle);
         book.setAuthor(author);
         book.setGenre(genre);
         return book;
+    }
+
+    private void setNewParametersOfBook (Book book, String bookTitle,
+                                         long authorId, String authorName,
+                                         long genreId, String genreName
+    ) {
+        book.setTitle(bookTitle);
+        book.getAuthor().setId(authorId);
+        book.getAuthor().setName(authorName);
+        book.getGenre().setId(genreId);
+        book.getGenre().setName(genreName);
     }
 }

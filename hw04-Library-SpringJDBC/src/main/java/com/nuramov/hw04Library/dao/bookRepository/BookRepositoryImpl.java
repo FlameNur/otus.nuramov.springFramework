@@ -29,30 +29,28 @@ public class BookRepositoryImpl implements BookRepository{
         Integer count = jdbcOperations.getJdbcOperations()
                 .queryForObject("SELECT count(*) FROM BOOKS", Integer.class);
 
-        if (count != null) return count;
-        else return 0;
+        return count != null ? count : 0;
     }
 
     @Override
-    public int save(String bookTitle,
-                    long authorId, String authorName,
-                    long genreId, String genreName
-    ) {
+    public int save(Book book) {
         // Сохраняем author, если его нет в БД. Определяем и передаем его новый id
-        if(!authorCheckInDB(authorId)) {
-            authorSave(authorName);
-            authorId = getAuthorIdFromDB(authorName);
+        if(!authorCheckInDB(book.getAuthor().getId())) {
+            authorSave(book.getAuthor().getName());
+            long newAuthorId = getAuthorIdFromDB(book.getAuthor().getName());
+            book.getAuthor().setId(newAuthorId);
         }
         // Сохраняем genre, если его нет в БД. Определяем и передаем его новый id
-        if(!genreCheckInDB(genreId)) {
-            genreSave(genreName);
-            genreId = getGenreIdFromDB(genreName);
+        if(!genreCheckInDB(book.getGenre().getId())) {
+            genreSave(book.getGenre().getName());
+            long newGenreId = getGenreIdFromDB(book.getGenre().getName());
+            book.getGenre().setId(newGenreId);
         }
         // Сохраняем в Books
         final HashMap<String, Object> bookParams = new HashMap<>(3);
-        bookParams.put("title", bookTitle);
-        bookParams.put("GENRE_id", genreId);
-        bookParams.put("AUTHOR_id", authorId);
+        bookParams.put("title", book.getTitle());
+        bookParams.put("GENRE_id", book.getGenre().getId());
+        bookParams.put("AUTHOR_id", book.getAuthor().getId());
         return jdbcOperations.update(
                 "INSERT INTO BOOKS (id, title, GENRE_id, AUTHOR_id) VALUES (default, :title, :GENRE_id, :AUTHOR_id)",
                 bookParams

@@ -9,10 +9,7 @@ public interface BookRepository {
 
     int count();
 
-    int save(String bookTitle,
-             long authorId, String authorName,
-             long genreId, String genreName
-    );
+    int save(Book book);
 
     int update(Book book);
 
