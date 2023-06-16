@@ -21,6 +21,7 @@
         <module>hw02-Questionnaire-AnnotationBased</module>
         <module>hw03-Questionnaire-SpringBootBased</module>
         <module>hw04-Library-SpringJDBC</module>
+        <module>hw05-Library-SpringDataJPA</module>
     </modules>
 
     <properties>
