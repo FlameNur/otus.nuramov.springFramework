@@ -9,24 +9,29 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>hw04-Library-SpringJDBC</artifactId>
+    <artifactId>hw05-Library-SpringDataJPA</artifactId>
+
+    <!--Пока оставлю это, не понятно как будет работать с тестами-->
+    <!--<properties>
+        <tests.skip>true</tests.skip>
+    </properties>-->
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+    </properties>
 
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-jdbc</artifactId>
-            <version>3.0.2</version>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+            <version>3.1.0</version>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
             <version>2.1.214</version>
             <scope>runtime</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework.shell</groupId>
-            <artifactId>spring-shell-starter</artifactId>
-            <version>3.0.1</version>
         </dependency>
 
         <dependency>
@@ -42,12 +47,26 @@
         </dependency>
     </dependencies>
 
+
+
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--При сборке maven install вылетает ошибка со ссылкой на тесты-->
+            <!--Добавление плагина и игнорирование ошибок позволило произвести сборку-->
+            <!--<plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.0.0-M9</version>
+                <configuration>
+                    <testFailureIgnore>true</testFailureIgnore>
+                </configuration>
+            </plugin>-->
         </plugins>
     </build>
 </project>
